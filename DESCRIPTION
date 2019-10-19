@@ -1,11 +1,24 @@
 Package: rvent
 Type: Package
-Title: What the Package Does (Title Case)
-Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Title: Analyze and Visualize data of scored muaythai and kickboxing fights
+Version: 0.0.0.9000
+Author: claudio_zanettini
+Maintainer: claudio_zanettini <claudio.zanettini@gmail.com>
+Description: Functions to import, analyze and visualize data of plethysmograph. 
+Depends: R (>= 3.3.6)
+License: GPL-2 
 Encoding: UTF-8
 LazyData: true
+Imports: 
+    vroom,
+    tidyr,
+    stringr,
+    janitor,
+    lubridate,
+    purrr,
+    magrittr,
+    rlang,
+    dplyr,
+    svDialogs (>= 1.0.1),
+    
+RoxygenNote: 6.1.1
