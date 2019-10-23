@@ -19,6 +19,5 @@ Imports:
     magrittr,
     rlang,
     dplyr,
-    svDialogs (>= 1.0.1),
-    
+    svDialogs (>= 1.0.1)
 RoxygenNote: 6.1.1
