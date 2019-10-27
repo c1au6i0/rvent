@@ -1,6 +1,6 @@
 Package: rvent
 Type: Package
-Title: Analyze and Visualize data of scored muaythai and kickboxing fights
+Title: Analyze and vsualize data recorded with IOX plethysmograph.
 Version: 0.0.0.9000
 Author: claudio_zanettini
 Maintainer: claudio_zanettini <claudio.zanettini@gmail.com>
@@ -10,14 +10,15 @@ License: GPL-2
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    vroom,
-    tidyr,
-    stringr,
-    janitor,
+    data.table,
+    dplyr,
     lubridate,
-    purrr,
     magrittr,
     rlang,
-    dplyr,
-    svDialogs (>= 1.0.1)
+    stringr,
+    svDialogs (>= 1.0.2),
+    tidyr,
+    vroom,
+    writexl,
+    ggplot2
 RoxygenNote: 6.1.1

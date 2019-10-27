@@ -1,16 +1,15 @@
 #' Import iox session.
 #'
-#' Import txt files created by the software IOX and return a dataframe of class vent.
+#' Import txt files created by the software IOX and return a list of dataframes of class iox.
 #'
 #' @param baseline Length of baseline in minutes.
-#' @return A list of dataframes of class vent.
+#' @return A list of dataframes of class iox.
 #' @importFrom rlang .data
 #' @export
 
 
 import_session <- function(baseline = 30){
 
-  # TO DO: ADD if missing statements
   iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
   list_files <- list.files(iox_folder, full.names = TRUE)
   files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
@@ -51,16 +50,21 @@ import_session <- function(baseline = 30){
 
   names(vent) <- unlist(vent_head)
 
-  #time in seconds from cpu_time, unfortunately the other columns reset to 0 after 1h
-  vent$cpu_date <- as.Date(vent$cpu_date, "%d-%b-%y")
+  # time in seconds from cpu_time, unfortunately the other columns reset to 0 after 1h
+  # Aug 19, 2019, 19-Mar-19
+
+
+  vent$cpu_date <- lubridate::parse_date_time(vent$cpu_date,
+                                              orders = c("%b %d, %Y",  "%d-%b-%y"))
+
   vent <- tidyr::separate(vent, .data$cpu_time, c("cpu_time", "time_ms"), sep ="\\.")
-  vent$cpu_time <- as.POSIXct(vent$cpu_time, format = "%H:%M:%S %p")
+  vent$cpu_time <- as.POSIXct(vent$cpu_time, format = "%I:%M:%S %p")
   vent[, "timecpu_s"] <- as.numeric(vent$time_ms)/1000 +
             as.numeric(format(vent$cpu_time, '%S')) +
             as.numeric(format(vent$cpu_time, '%M')) *60 +
-            as.numeric(format(vent$cpu_time, '%H')) *3600
+            as.numeric(format(vent$cpu_time, '%I')) *3600
 
-  # recode
+  # recode use recode_col instead: recode_col(vent$id, subj_drug_v)
   vent_id <- as.character(unique(vent$id))
   id_recode <- subj_drug_v[seq_along(vent_id)]
   newnames <- stats::setNames(id_recode, vent_id)
@@ -100,7 +104,7 @@ import_session <- function(baseline = 30){
   if (nrow(na_pos) > 0) {
     for (x in as.numeric(unique(na_pos$row))) {
       mesg <-  paste(list("subj =","; drug =", "; dose =", "; unit ="), unlist(tsd_s[x, 2:ncol(tsd_s)]), collapse = " ")
-      tofill <- svDialogs::dlg_input(paste0("Enter missing values (NA) separated by space of ", mesg))$res
+      tofill <- svDialogs::dlg_input(paste0("Enter any missing values (NA) in:  ", mesg))$res
       tofill <- unlist(strsplit(tofill, " "))
       prova <- is.na(tsd_s[x,])
       tsd_s[x, as.vector(is.na(tsd_s[x,]))] <- tofill
@@ -112,7 +116,7 @@ import_session <- function(baseline = 30){
 
 
   # vent_joined
-  vent_j <- dplyr::inner_join(vent, tsd_s, by = c("subj_drug"))
+  suppressWarnings(vent_j <- dplyr::inner_join(vent, tsd_s, by = c("subj_drug")))
 
   # split
   vent_jn <- split.data.frame(vent_j, as.factor(vent_j$subj_drug))
@@ -126,10 +130,10 @@ import_session <- function(baseline = 30){
       # x[, "start_time"] <- start_time
       x[, "time_s"] <- x[["timecpu_s"]] - x[["time_inj"]]
       x <-   x[x$time_s >= -baseline, ]
-      class(x) <- list(class(x),"vent")
+      class(x) <- c(unlist(class(x)), "iox")
       return(x)
   })
-  class(vent_jn) <- c("list", "vent")
+  class(vent_jn) <- c(unlist(class(vent_jn)), "iox")
   vent_jn
 }
 
