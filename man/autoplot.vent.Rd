@@ -2,7 +2,14 @@
 % Please edit documentation in R/vent.R
 \name{autoplot.vent}
 \alias{autoplot.vent}
-\title{autoplot vent}
+\title{#' Methods of class vent
+#'
+#' These functions provide methods for collection, analyzing and visualizing a
+#' set of vent results from a common data set
+#'
+#'
+#'
+#' @export vent}
 \usage{
 \method{vent}{data.frame}(dat)
 }
@@ -13,5 +20,16 @@
 plot.
 }
 \description{
-autoplot_vent plot a dataframe of class vent
+"vent" <- function(x, ...) UseMethod("vent")
+}
+\details{
+#' @rdname vent
+#' @method vent default
+#' @export
+vent.default <- function(dat) {
+    if (!"data.frame" %in% class(dat)) stop("The object is not a data.frame")
+}
+autoplot vent
+
+autoplot.vent plots a vent dataframe
 }

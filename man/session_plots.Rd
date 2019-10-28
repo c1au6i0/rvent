@@ -4,7 +4,7 @@
 \alias{session_plots}
 \title{session_plots.}
 \usage{
-session_plots(dat, path)
+session_plots(dat, path, basel = 30, bin = 3)
 }
 \arguments{
 \item{dat}{a iox dataframe.}

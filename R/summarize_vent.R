@@ -61,7 +61,7 @@ summarize_vent <- function(dat){
   # Split and long to wide again
   suppressWarnings(dat_fs <- split.data.frame(dat_sm2, dat_sm$measure))
 
-  svDialogs::dlg_message1("Next select the folder where to save the summary", type = "ok")$res
+  svDialogs::dlg_message("Next select the folder where to save the summary", type = "ok")$res
   file_p <- svDialogs::dlg_dir()$res
 
   setwd(file_p)
