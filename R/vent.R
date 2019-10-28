@@ -1,21 +1,42 @@
-#' autoplot vent.
+#' #' Methods of class vents
+#' #'
+#' #' These functions provide methods for collection, analyzing and visualizing a
+#' #' set of vent results from a common data set
+#' #'
+#' #'
+#' #'
+#' #' @export vent
 #'
-#' autoplot_vent plot a dataframe of class vent
+#' "vent" <- function(x, ...) UseMethod("vent")
+#'
+#'
+#' #' @rdname vent
+#' #' @method vent default
+#' #' @export
+#' vent.default <- function(dat) {
+#'     if (!"data.frame" %in% class(dat)) stop("The object is not a data.frame")
+#' }
+
+#' autoplot vent
+#'
+#' autoplot_vent plots a vent dataframe
 #'
 #' @param dat a vent dataframe.
 #' @return plot.
 #' @import ggplot2
-#' @export
-#'
+#' @method vent data.frame
+#' @export autoplot.vent
 
-autoplot_vent <-function(dat){
-
+autoplot.vent <-function(dat){
+  # https://adv-r.hadley.nz/s3.html
   if (!"vent" %in% class(dat)) stop("Object is not of class vent")
 
   title <- paste(as.character(dat$cpu_date[1]), dat$subj[1], dat$drug[1], dat$dose[1], dat$unit[1], sep = " ")
   file_name <- paste(as.character(dat$cpu_date[1]), dat$subj[1], dat$drug[1], dat$dose[1], sep = "_")
   dat$int_min <- as.numeric(dat$int_min)
+
   labs <- as.numeric(seq(min(dat$int_min), max(dat$int_min), 15))
+
   fig <- ggplot(dat, aes_string('int_min', 'mean', col = 'measure')) +
     geom_point() +
     geom_line() +

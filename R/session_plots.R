@@ -9,15 +9,16 @@
 #' @export
 #'
 
-session_plots <-function(dat, path) {
-  dat_vent <- summarize_vent_ni(dat = dat, basel = 30, bin = 3)
+session_plots <-function(dat, path, basel = 30, bin = 3) {
+
+  dat_vent <- summarize_vent_ni(dat = dat, basel = basel, bin = bin)
   dat_sm <- dat_vent[[1]]
   setwd(path)
   dat_sml <- split.data.frame(dat_sm, dat_sm$subj)
 
   lapply(split.data.frame(dat_sm, dat_sm$subj), function(x){
     class(x) <- c("vent", "data.frame")
-    autoplot_vent(x)
+    autoplot(x)
     }
   )
 

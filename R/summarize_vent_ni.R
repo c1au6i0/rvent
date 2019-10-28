@@ -31,7 +31,7 @@ summarize_vent_ni <- function(dat, basel = 30, bin = 3){
                      n = dplyr::n()) %>%
     tidyr::separate(.data$subj_drug, c("subj", "drug"), remove = TRUE)
 
-  class(dat_sm) <- c(unlist(class(dat_sm)), "vent")
+  class(dat_sm) <- c("vent", "data.frame")
 
   # data summary longer
   dat_sm2  <- data.table::melt(dat_sm, measure.vars = c("mean", "median", "sd", "n"),
