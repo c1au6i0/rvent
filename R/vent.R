@@ -1,4 +1,4 @@
-#' #' Methods of class vents
+#' #' Methods of class vent
 #' #'
 #' #' These functions provide methods for collection, analyzing and visualizing a
 #' #' set of vent results from a common data set
@@ -9,7 +9,7 @@
 #'
 #' "vent" <- function(x, ...) UseMethod("vent")
 #'
-#'
+
 #' #' @rdname vent
 #' #' @method vent default
 #' #' @export
@@ -19,7 +19,7 @@
 
 #' autoplot vent
 #'
-#' autoplot_vent plots a vent dataframe
+#' autoplot.vent plots a vent dataframe
 #'
 #' @param dat a vent dataframe.
 #' @return plot.

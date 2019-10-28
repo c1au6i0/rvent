@@ -6,7 +6,7 @@ Author: claudio_zanettini
 Maintainer: claudio_zanettini <claudio.zanettini@gmail.com>
 Description: Functions to import, analyze and visualize data of plethysmograph. 
 Depends: R (>= 3.3.6)
-License: GPL-2 
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
