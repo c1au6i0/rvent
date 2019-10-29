@@ -48,7 +48,9 @@ summarize_vent_ni <- function(dat, basel = 30, bin = 3){
   # Split and long to wide again
   suppressWarnings(dat_fs <- split.data.frame(dat_sm2, dat_sm$measure))
 
-  return(list(dat_sm = dat_sm, dat_sm2 = dat_sm2, dat_long = dat_long))
+  # dat_sm is the datgrame used to make plots
+
+  return(list(dat_sm = dat_sm, dat_sm2 = dat_sm2, dat_long = dat_long, dat_fs = dat_fs))
 
 }
 

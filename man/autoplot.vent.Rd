@@ -11,7 +11,7 @@
 #'
 #' @export vent}
 \usage{
-\method{vent}{data.frame}(dat)
+\method{vent}{data.frame}(dat, fsave = TRUE)
 }
 \arguments{
 \item{dat}{a vent dataframe.}

@@ -27,7 +27,7 @@
 #' @method vent data.frame
 #' @export autoplot.vent
 
-autoplot.vent <-function(dat){
+autoplot.vent <-function(dat, fsave = TRUE){
   # https://adv-r.hadley.nz/s3.html
   if (!"vent" %in% class(dat)) stop("Object is not of class vent")
 
@@ -47,5 +47,9 @@ autoplot.vent <-function(dat){
     theme(legend.position = "none",
           plot.title = element_text(hjust = 0.5)
     )
+    if (fsave == TRUE) {
     ggsave(paste0(file_name, ".pdf"), fig, device = "pdf", width = 30, heigh = 30, units = "cm")
+    } else {
+      return(fig)
+    }
 }
