@@ -6,14 +6,13 @@
 <!-- badges: start -->
 
 [![](https://img.shields.io/badge/devel%20version-0.0.0.9000-blue.svg)](https://github.com/https://github.com/c1au6i0/rvent)
-[![](https://travis-ci.org/c1au6i0/rvent.svg?branch=master)](https://travis-ci.org/c1au6i0/rvent)
 [![](https://img.shields.io/github/last-commit/c1au6i0/rvent.svg)](https://github.com/c1au6i0/rvent/commits/master)
 <!-- badges: end -->
 
 The goal of rvent is to summarize, analyze and plot experimental data
 recorded with the [SCIREQ pletysmograph](https://www.scireq.com/).
 
-The package is meant to be used by user with limited knoledge of *R*
+The package is meant to be used by users with limited knowledge of *R*
 and, eventually, to be the foundation for an interactive shiny app.
 
 ## Installation

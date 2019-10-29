@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 
 The goal of rvent is to summarize, analyze and plot experimental data recorded with the [SCIREQ pletysmograph](https://www.scireq.com/).
 
-The package is meant to be used by user with limited knoledge of *R* and, eventually, to be the foundation for an interactive shiny app.
+The package is meant to be used by users with limited knowledge of *R* and, eventually, to be the foundation for an interactive shiny app.
 
 ## Installation
 
