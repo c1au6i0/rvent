@@ -34,11 +34,11 @@ library(rvent)
 sess1 <- import_session() 
 
 # open a series of interactive windows to select bin and baseline duration,
-# missing info regarding drug treatments and summarize the data
+# missing info regarding drug treatments and summarizes the data
 # in an excel file
 summarize_vent(sess1)
 
-# for each subject create a plot with 20 facets corresponding to the 20 recorded
+# for each subject creates a plot with 20 facets corresponding to the 20 recorded
 # variables
 session_plots(sess1, svDialogs::dlg_dir()$dir)
 ```

@@ -1,6 +1,6 @@
 Package: rvent
 Type: Package
-Title: Analyze and vsualize data recorded with IOX plethysmograph.
+Title: Analyze and vsualize data recorded with IOX plethysmograph
 Version: 0.0.0.9000
 Author: claudio_zanettini
 Maintainer: claudio_zanettini <claudio.zanettini@gmail.com>

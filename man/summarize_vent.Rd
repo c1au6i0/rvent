@@ -2,16 +2,29 @@
 % Please edit documentation in R/summarize_vent.R
 \name{summarize_vent}
 \alias{summarize_vent}
-\title{summarize vent dataframes.}
+\title{summarize _vent}
 \usage{
-summarize_vent(dat)
+summarize_vent(dat, baseline = 30, bin = 3, inter = FALSE)
 }
 \arguments{
 \item{dat}{a list of vent dataframes as returned by import_session.}
+
+\item{baseline}{length of baseline in minutes}
+
+\item{bin}{length of bins in minutes}
+
+\item{inter}{logical}
 }
 \value{
-An excel file.
+a list of dataframes:
+\enumerate{
+  \item \strong{dat_long}: a dataframe of the session that contains a the column *measure* and bins.
+  \item \strong{dat_vent}: a vent dataframe, in which summary stats for each bin have been calculated.
+  \item \strong{dat_sm}: a dataframe binned and summarized in which the summary stats have been melted in the column *int_stat* and
+  the intervals and bins (*int_bin* column) have been dcast to a wide format.
+  \item \strong{dat_fs} a dat_sm dataframe splitted by *measure*.
+}
 }
 \description{
-summarize_vent creates duration intervals, filters and summarize a list of iox dataframes.
+summarize_vent creates duration intervals, filters and summarize a list of vent objects obtained by import_vent.
 }

@@ -4,12 +4,16 @@
 \alias{session_plots}
 \title{session_plots.}
 \usage{
-session_plots(dat, path, basel = 30, bin = 3)
+session_plots(dat, path, baseline = 30, bin = 3)
 }
 \arguments{
 \item{dat}{a iox dataframe.}
 
 \item{path}{where to save the files}
+
+\item{bin}{length of bin in minutes}
+
+\item{basel}{length of baseline in minutes}
 }
 \value{
 plots

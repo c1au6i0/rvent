@@ -4,19 +4,19 @@
 #'
 #' @param dat a iox dataframe.
 #' @param path where to save the files
+#' @param basel length of baseline in minutes
+#' @param bin length of bin in minutes
 #' @return plots
 #' @import ggplot2
 #' @export
 #'
+session_plots <-function(dat, path, baseline = 30, bin = 3) {
 
-session_plots <-function(dat, path, basel = 30, bin = 3) {
-
-  dat_vent <- summarize_vent_ni(dat = dat, basel = basel, bin = bin)
-  dat_sm <- dat_vent[[1]]
+  dfs <- summarize_vent(dat = dat, baseline = baseline, bin = bin)
+  dat_vent <- dfs$dat_vent
   setwd(path)
-  dat_sml <- split.data.frame(dat_sm, dat_sm$subj)
 
-  lapply(split.data.frame(dat_sm, dat_sm$subj), function(x){
+  lapply(split.data.frame(dat_vent, dat_vent$subj), function(x){
     class(x) <- c("vent", "data.frame")
     autoplot(x)
     }

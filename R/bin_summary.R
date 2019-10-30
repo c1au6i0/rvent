@@ -10,8 +10,6 @@
 #' @importFrom rlang .data
 #' @note this function is used by s3ummarize_vent
 #' @export
-#'
-
 find_bins <- function(dat, baseline, bin) {
 
    # filter based on some acceptance criteria in rats

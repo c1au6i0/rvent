@@ -6,8 +6,6 @@
 #' @return A list of dataframes of class iox.
 #' @importFrom rlang .data
 #' @export
-
-
 import_session <- function(baseline = 30){
 
   iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
