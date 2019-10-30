@@ -11,9 +11,11 @@ session_plots(dat, path, baseline = 30, bin = 3)
 
 \item{path}{where to save the files}
 
+\item{baseline}{length of baseline in minutes}
+
 \item{bin}{length of bin in minutes}
 
-\item{basel}{length of baseline in minutes}
+\item{fsave}{if}
 }
 \value{
 plots

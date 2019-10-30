@@ -20,25 +20,22 @@ new_vent <- function(dat = data.frame()) {
   structure(dat, class = "vent", bin = unique(dat$bin), baseline = unique(dat$baseline))
 }
 
-#' vent validate
+#' #' vent validate
+#' #'
+#' #' validate an object of class vent
+#' #'
+#' #' @param dat object
+#' #' @export validate_vent
+#' validate_vent <- function(dat){
 #'
-#' validate an object of class vent
+#'   obtained <- as.data.frame(sapply(dat, typeof))
 #'
-#' @param dat object
-#' @export validate_vent
-validate_vent <- function(dat){
-
-  obtained <- as.data.sapply(dat, typeof)
-
-  if(!all(expect = names(dat))) stop("Wrong columns: check number of columns and or/and their names")
-
-
-  values <- unclass(dat)
-  names(attributes(dat))
-}
-
-
-
+#'   if(!all(expect = names(dat))) stop("Wrong columns: check number of columns and or/and their names")
+#'
+#'
+#'   values <- unclass(dat)
+#'   names(attributes(dat))
+#' }
 
 #' dat_vent
 #'

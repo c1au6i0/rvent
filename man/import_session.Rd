@@ -4,10 +4,13 @@
 \alias{import_session}
 \title{Import iox session.}
 \usage{
-import_session(baseline = 30)
+import_session(baseline = 30, inter = TRUE, iox_folder, comments_tsd,
+  tofill)
 }
 \arguments{
 \item{baseline}{Length of baseline in minutes.}
+
+\item{inter}{logical for using or  not dialogs to input data and select folders.}
 }
 \value{
 A list of dataframes of class iox.

@@ -3,12 +3,18 @@
 #' Import txt files created by the software IOX and return a list of dataframes of class iox.
 #'
 #' @param baseline Length of baseline in minutes.
+#' @param inter logical for using or  not dialogs to input data and select folders.
 #' @return A list of dataframes of class iox.
 #' @importFrom rlang .data
 #' @export
-import_session <- function(baseline = 30){
+import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd, tofill){
 
+  if (inter == FALSE){
+    if (missing(iox_folder)) stop("iox_folder missing!")
+  } else {
   iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
+  }
+
   list_files <- list.files(iox_folder, full.names = TRUE)
   files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
 
@@ -75,7 +81,13 @@ import_session <- function(baseline = 30){
   comments <- unique(vent$info[vent$string_type == c("comment")])
 
   # tsd = time_injection subject and drug
-  comments_tsd <- svDialogs::dlg_list(stats::na.omit(comments), multiple = TRUE, title = "Choose the comments containing subject and drug administered")$res
+
+  if (inter == FALSE){
+    if (missing(comments_tsd)) stop("comments_tsd missing!")
+    if (length(comments_tsd) == 0) stop("no injection time!")
+  } else {
+    comments_tsd <- svDialogs::dlg_list(stats::na.omit(comments), multiple = TRUE, title = "Choose the comments containing subject and drug administered")$res
+  }
 
   # tsd = time_injection subject and drug
   # type of comments: ray1 heroin 600 ug/kg, rat 3 heroin 600 ug/kg, rats 9 and 11 - heroin 600 ug/kg
@@ -99,15 +111,19 @@ import_session <- function(baseline = 30){
   # Replace NA positions
   na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
 
-  if (nrow(na_pos) > 0) {
-    for (x in as.numeric(unique(na_pos$row))) {
-      mesg <-  paste(list("subj =","; drug =", "; dose =", "; unit ="), unlist(tsd_s[x, 2:ncol(tsd_s)]), collapse = " ")
-      tofill <- svDialogs::dlg_input(paste0("Enter any missing values (NA) in:  ", mesg))$res
-      tofill <- unlist(strsplit(tofill, " "))
-      prova <- is.na(tsd_s[x,])
-      tsd_s[x, as.vector(is.na(tsd_s[x,]))] <- tofill
+  if(inter == FALSE){
+    if (missing(tofill)) stop("tofill missing!")
+    tsd_s[is.na(tsd_s)] <- tofill
+    }else{
+      if (nrow(na_pos) > 0) {
+        for (x in as.numeric(unique(na_pos$row))) {
+          mesg <-  paste(list("subj =","; drug =", "; dose =", "; unit ="), unlist(tsd_s[x, 2:ncol(tsd_s)]), collapse = " ")
+          tofill <- svDialogs::dlg_input(paste0("Enter any missing values (NA) in:  ", mesg))$res
+          tofill <- unlist(strsplit(tofill, " "))
+          prova <- is.na(tsd_s[x,])
+          tsd_s[x, as.vector(is.na(tsd_s[x,]))] <- tofill}
+      }
     }
-  }
 
   names(tsd_s)[names(tsd_s) == "timecpu_s"] <- "time_inj"
   tsd_s[, "subj_drug"] <- as.factor(paste0("rat", tsd_s$subj, "_", tsd_s$drug))

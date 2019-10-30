@@ -4,8 +4,9 @@
 #'
 #' @param dat a iox dataframe.
 #' @param path where to save the files
-#' @param basel length of baseline in minutes
+#' @param baseline length of baseline in minutes
 #' @param bin length of bin in minutes
+#' @param fsave if
 #' @return plots
 #' @import ggplot2
 #' @export

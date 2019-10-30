@@ -66,7 +66,9 @@ This is the plot for the subject Alex_DeLarge that received milk-plus.
 library(rvent)
 library(tidyverse)
 
-load(file = "/Users/heverz/Documents/R_projects/rvent/R/sysdata.rda")
+load("R/sysdata.rda")
+
+class(dat_vent) <- "data.frame"
 
 x <- dat_vent %>% 
   filter(subj == "rat1") %>% 
