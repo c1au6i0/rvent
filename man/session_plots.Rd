@@ -14,8 +14,6 @@ session_plots(dat, path, baseline = 30, bin = 3)
 \item{baseline}{length of baseline in minutes}
 
 \item{bin}{length of bin in minutes}
-
-\item{fsave}{if}
 }
 \value{
 plots
