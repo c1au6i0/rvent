@@ -20,7 +20,7 @@ Imports:
     vroom,
     writexl,
     ggplot2
-Remotes: SciViews/svDialogs
+Remotes: github::SciViews/svDialogs
 RoxygenNote: 6.1.1
 Suggests: 
     testthat (>= 2.1.0)
