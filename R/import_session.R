@@ -4,6 +4,9 @@
 #'
 #' @param baseline Length of baseline in minutes.
 #' @param inter logical for using or  not dialogs to input data and select folders.
+#' @param iox_folder path to folder for saving data, used if inter = FALSE.
+#' @param comments_tsd vector of comments that contain doses, used if inter = FALSE.
+#' @param tofill vector of values to replace missing data in comments_tsd, used if inter = FALSE.
 #' @return A list of dataframes of class iox.
 #' @importFrom rlang .data
 #' @export
@@ -12,6 +15,7 @@ import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd
   if (inter == FALSE){
     if (missing(iox_folder)) stop("iox_folder missing!")
   } else {
+  svDialogs::dlg_message("Choose folder containing  iox.txt files of the session.", type = "ok")
   iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
   }
 

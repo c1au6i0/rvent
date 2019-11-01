@@ -16,11 +16,13 @@ Imports:
     magrittr,
     rlang,
     stringr,
-    svDialogs (>= 1.0.2),
     tidyr,
     vroom,
     writexl,
     ggplot2
+Remote: 
+    SciViews/svDialogs
 RoxygenNote: 6.1.1
 Suggests: 
     testthat (>= 2.1.0)
+

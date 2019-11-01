@@ -4,16 +4,19 @@
 \alias{summarize_vent}
 \title{summarize _vent}
 \usage{
-summarize_vent(dat, baseline = 30, bin = 3, inter = FALSE)
+summarize_vent(dat, inter = TRUE, baseline = 30, bin = 3,
+  form = "mean")
 }
 \arguments{
 \item{dat}{a list of vent dataframes as returned by import_session.}
+
+\item{inter}{logical}
 
 \item{baseline}{length of baseline in minutes}
 
 \item{bin}{length of bins in minutes}
 
-\item{inter}{logical}
+\item{form}{stat for summarizing the data.}
 }
 \value{
 a list of dataframes:

@@ -1,7 +1,7 @@
 Acceptance criteria - Rats
 
                    Min          Max
-Inspiratory time   100 ms       2000 ms
-Expiratory time    120 ms       2000 ms
+Inspiratory time   100 ms       2000 ms  TI
+Expiratory time    120 ms       2000 ms TE
 Tidal volume       0.04         10
 Frequency          10 bpm       250 bpm

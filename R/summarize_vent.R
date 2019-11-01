@@ -6,6 +6,7 @@
 #' @param baseline length of baseline in minutes
 #' @param bin length of bins in minutes
 #' @param inter logical
+#' @param form stat for summarizing the data.
 #' @return a list of dataframes:
 #' \enumerate{
 #'   \item \strong{dat_long}: a dataframe of the session that contains a the column *measure* and bins.
@@ -18,7 +19,7 @@
 #' @importFrom magrittr %>%
 #' @import stats
 #' @export
-summarize_vent <- function(dat, baseline = 30, bin = 3, inter = FALSE){
+summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "mean"){
 
   if(inter == TRUE){
     baseline_bin <- svDialogs::dlg_input("Insert the baseline and the bin duration in minutes, separated by a space")$res
@@ -50,9 +51,15 @@ summarize_vent <- function(dat, baseline = 30, bin = 3, inter = FALSE){
 
   class(dat_vent) <- c("vent", "data.frame")
 
+  if(inter == TRUE) {
+  form <- svDialogs::dlg_list(list("mean", "median", "n", "sd"), multiple = TRUE,
+                              title = "Choose how to summarize the values of each bin")$res
+  }
+
   # data summary longer
   dat_sm  <- data.table::melt(dat_vent, measure.vars = c("mean", "median", "sd", "n"),
                               variable.name = "stat", value.name = "value") %>%
+             dplyr::filter(.data$stat %in% form) %>%
              dplyr:: arrange(as.numeric(.data$int_min), .data$stat) %>%
              tidyr::unite("int_stat", .data$int_min, .data$stat, sep = "_")
 

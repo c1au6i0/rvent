@@ -11,6 +11,12 @@ import_session(baseline = 30, inter = TRUE, iox_folder, comments_tsd,
 \item{baseline}{Length of baseline in minutes.}
 
 \item{inter}{logical for using or  not dialogs to input data and select folders.}
+
+\item{iox_folder}{path to folder for saving data, used if inter = FALSE.}
+
+\item{comments_tsd}{vector of comments that contain doses, used if inter = FALSE.}
+
+\item{tofill}{vector of values to replace missing data in comments_tsd, used if inter = FALSE.}
 }
 \value{
 A list of dataframes of class iox.
