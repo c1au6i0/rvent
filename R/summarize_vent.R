@@ -17,6 +17,7 @@
 #' }
 #' @importFrom rlang .data
 #' @importFrom magrittr %>%
+#' @importFrom data.table as.data.table
 #' @import stats
 #' @export
 summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "mean"){
@@ -35,7 +36,7 @@ summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "m
   col_melt <- which(names(dat_all) %in% c("Ti_msec", "Sr_per"))
 
   # wide to long
-  dat_long <- data.table::melt(dat_all, measure.vars = col_melt[1]:col_melt[2],
+  dat_long <- data.table::melt(as.data.table(dat_all), measure.vars = col_melt[1]:col_melt[2],
                                variable.name = "measure", value.name = "value")
 
   # first data summary
@@ -49,7 +50,8 @@ summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "m
                      bin = bin) %>%
     tidyr::separate(.data$subj_drug, c("subj", "drug"), remove = TRUE)
 
-  class(dat_vent) <- c("vent", "data.frame")
+
+  class(dat_vent) <- c("data.frame", "vent")
 
   if(inter == TRUE) {
   form <- svDialogs::dlg_list(list("mean", "median", "n", "sd"), multiple = TRUE,
@@ -57,16 +59,16 @@ summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "m
   }
 
   # data summary longer
-  dat_sm  <- data.table::melt(dat_vent, measure.vars = c("mean", "median", "sd", "n"),
+  suppressWarnings(dat_sm  <- data.table::melt(as.data.table(dat_vent), measure.vars = c("mean", "median", "sd", "n"),
                               variable.name = "stat", value.name = "value") %>%
              dplyr::filter(.data$stat %in% form) %>%
              dplyr:: arrange(as.numeric(.data$int_min), .data$stat) %>%
-             tidyr::unite("int_stat", .data$int_min, .data$stat, sep = "_")
+             tidyr::unite("int_stat", .data$int_min, .data$stat, sep = "_"))
 
   # reorder levels
   dat_sm$int_stat <- factor(dat_sm$int_stat, levels = unique(dat_sm$int_stat))
 
-  dat_sm <- data.table::dcast(dat_sm,
+  dat_sm <- data.table::dcast(as.data.table(dat_sm),
                                cpu_date + subj + drug + dose + unit +  measure ~ int_stat, value.var = "value")
 
   # Split and long to wide again

@@ -7,7 +7,7 @@
 #' @return  an object of class vent
 #' @aliases autoplot.vent, new_vent, validate_vent, as.data.frame.vent
 #' @export vent
-"vent" <- function(dat, ...) UseMethod("vent")
+"vent" <- function(dat, ...) NextMethod("vent")
 
 
 #' vent constructor

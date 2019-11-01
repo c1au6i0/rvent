@@ -24,7 +24,6 @@ session_plots <-function(dat, inter = TRUE, path, baseline = 30, bin = 3) {
   setwd(path)
 
   lapply(split.data.frame(dat_vent, dat_vent$subj), function(x){
-    class(x) <- c("vent", "data.frame")
     autoplot(x)
     }
   )
