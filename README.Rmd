@@ -30,10 +30,6 @@ The package is meant to be used by users with limited knowledge of *R* and, even
 ``` r
 # install.packages("devtools")
 
-# Require devel version of svDialogs (>= 1.0.2)
-devtools::install_github("SciViews/svGUI")
-devtools::install_github("SciViews/svDialogs")
-
 devtools::install_github("c1au6i0/rvent")
 ```
 ## Example

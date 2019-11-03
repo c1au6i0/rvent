@@ -20,10 +20,6 @@ and, eventually, to be the foundation for an interactive shiny app.
 ``` r
 # install.packages("devtools")
 
-# Require devel version of svDialogs (>= 1.0.2)
-devtools::install_github("SciViews/svGUI")
-devtools::install_github("SciViews/svDialogs")
-
 devtools::install_github("c1au6i0/rvent")
 ```
 
