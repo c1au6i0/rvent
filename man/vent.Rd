@@ -2,10 +2,6 @@
 % Please edit documentation in R/vent.R
 \name{vent}
 \alias{vent}
-\alias{autoplot.vent,}
-\alias{new_vent,}
-\alias{validate_vent,}
-\alias{as.data.frame.vent}
 \title{Class vent}
 \usage{
 vent(dat, ...)
@@ -20,4 +16,7 @@ an object of class vent
 }
 \description{
 Method, constructor and validator of objects of class vent
+}
+\seealso{
+autoplot.vent, new_vent, validate_vent
 }

@@ -2,7 +2,7 @@
 #'
 #' find_bins creates left closed duration intervals and filters a vent dataframe.
 #'
-#' @param dat vent dataframe.
+#' @param dat iox dataframe.
 #' @param baseline baseline duration in minutes
 #' @param bin bin duration in minutes
 #' @return a vent dataframe with a column "int_min" indicating the left limit of the interval in minutes and, a
@@ -18,7 +18,15 @@ find_bins <- function(dat, baseline, bin) {
          dat$TV_ml <= 10 &
 
          dat$f_bpm >= 10 &
-         dat$f_bpm <= 250, ]
+         dat$f_bpm <= 250 &
+
+         dat$Ti_msec >= 100 &
+         dat$Ti_msec <= 2000 &
+
+         dat$Te_msec >= 120 &
+         dat$Te_msec <= 2000,
+
+         ]
 
    dat <- dat[!is.na(dat$time_s), ]
 

@@ -56,7 +56,7 @@ import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd
                 id = "id"
                 )
 
-  names(vent) <- unlist(vent_head)
+  names(vent) <- unlist(iox_head)
 
   # time in seconds from cpu_time, unfortunately the other columns reset to 0 after 1h
   # Aug 19, 2019, 19-Mar-19

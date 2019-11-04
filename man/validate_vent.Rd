@@ -2,20 +2,13 @@
 % Please edit documentation in R/vent.R
 \name{validate_vent}
 \alias{validate_vent}
-\title{#' vent validator
-#'
-#' validate an object of class vent
-#'
-#' @param dat object
-#' @export validate_vent}
+\title{vent validator}
 \usage{
 validate_vent(dat)
 }
+\arguments{
+\item{dat}{object}
+}
 \description{
-#' vent validator
-#'
-#' validate an object of class vent
-#'
-#' @param dat object
-#' @export validate_vent
+validate an object of class vent
 }

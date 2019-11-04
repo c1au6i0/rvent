@@ -5,7 +5,7 @@
 #' @param  dat an object of class dataframe
 #' @param ... dots
 #' @return  an object of class vent
-#' @aliases autoplot.vent, new_vent, validate_vent
+#' @seealso  autoplot.vent, new_vent, validate_vent
 #' @export vent
 "vent" <- function(dat, ...) NextMethod("vent")
 
@@ -20,12 +20,12 @@ new_vent <- function(dat = data.frame()) {
   structure(dat, class = "vent", bin = unique(dat$bin), baseline = unique(dat$baseline))
 }
 
-#' #' vent validator
-#' #'
-#' #' validate an object of class vent
-#' #'
-#' #' @param dat object
-#' #' @export validate_vent
+#' vent validator
+#'
+#' validate an object of class vent
+#'
+#' @param dat object
+#' @export validate_vent
 validate_vent <- function(dat){
    obtained <- as.data.frame(sapply(dat, typeof))
 
@@ -47,6 +47,5 @@ validate_vent <- function(dat){
    dat
 }
 
-#' dat_vent
-#'
-#' An object of class vent. Use in testthat
+
+
