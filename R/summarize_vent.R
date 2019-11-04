@@ -1,6 +1,6 @@
 #' summarize _vent
 #'
-#' summarize_vent creates duration intervals, filters and summarize a list of vent objects obtained by import_vent.
+#' summarize_vent creates duration intervals, filters and summarize a list of vent objects returned by import_vent.
 #'
 #' @param dat a list of vent dataframes as returned by import_session.
 #' @param baseline length of baseline in minutes

@@ -1,6 +1,6 @@
 #' session_plots.
 #'
-#' session_plots create plotz of iox objects
+#' session_plots create plots from objects returned by summarize_vent
 #'
 #' @param dat a iox dataframe.
 #' @param inter logical that determines if dialogs will be used.

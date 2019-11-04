@@ -19,6 +19,8 @@ import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd
   iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
   }
 
+  browser()
+
   list_files <- list.files(iox_folder, full.names = TRUE)
   files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
 
@@ -65,25 +67,26 @@ import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd
   vent$cpu_date <- lubridate::parse_date_time(vent$cpu_date,
                                               orders = c("%b %d, %Y",  "%d-%b-%y"))
 
-  vent <- tidyr::separate(vent, .data$cpu_time, c("cpu_time", "time_ms"), sep ="\\.")
+  vent <- tidyr::separate(vent, .data$cpu_time, c("cpu_time", "cpu_ms"), sep ="\\.")
   vent$cpu_time <- as.POSIXct(vent$cpu_time, format = "%I:%M:%S %p")
-  vent[, "timecpu_s"] <- as.numeric(vent$time_ms)/1000 +
+  vent[, "timecpu_s"] <- as.numeric(vent$cpu_ms)/1000 +
             as.numeric(format(vent$cpu_time, '%S')) +
             as.numeric(format(vent$cpu_time, '%M')) *60 +
-            as.numeric(format(vent$cpu_time, '%I')) *3600
+            as.numeric(format(vent$cpu_time, '%H')) * 3600
 
-  # recode use recode_col instead: recode_col(vent$id, subj_drug_v)
+  # recode \
   vent_id <- as.character(unique(vent$id))
   id_recode <- subj_drug_v[seq_along(vent_id)]
   newnames <- stats::setNames(id_recode, vent_id)
   vent[,"subj_drug"] <- newnames[vent$id]
-  vent$subj_drug <-as.factor(newnames[vent$id])
+  vent$subj_drug <- as.factor(newnames[vent$id])
 
   vent$string_type <- tidyr::replace_na(vent$string_type, 0)
 
   # comments
   comments <- unique(vent$info[vent$string_type == c("comment")])
 
+  # All this is to identify where the injection was given based on comments.
   # tsd = time_injection subject and drug
 
   if (inter == FALSE){
@@ -104,15 +107,14 @@ import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd
   toadd$info <- stringr::str_extract(toadd$info, "(?<=and ).*")
   tsd <- rbind(tsd, toadd)
 
-  # TRY ALL IN ONE CALL
   tsd$info <- stringr::str_remove_all(tsd$info, "(\\sand\\s[0-9]+\\s)")
   tsd$info <- stringr::str_remove_all(tsd$info, "^([:alpha:]{3,4}\\s)|^[:alpha:]{3,4}") # rat rats or ray
   tsd$info <- stringr::str_remove_all(tsd$info, "(?!/)[:punct:]")
 
-  # now we split them, tsd_s = tsd separated
+  # now we split the comment, tsd_s = tsd separated
   tsd_s <- tidyr::separate(tsd, .data$info, c("subj", "drug", "dose", "unit"), fill = "right", extra = "merge")
 
-  # Replace NA positions
+  # Replace any missing information
   na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
 
   if(inter == FALSE){
@@ -133,14 +135,14 @@ import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd
   tsd_s[, "subj_drug"] <- as.factor(paste0("rat", tsd_s$subj, "_", tsd_s$drug))
 
 
-  # vent_joined
+  # Join tsd_s and vent to add column with injection time.
   suppressWarnings(vent_j <- dplyr::inner_join(vent, tsd_s, by = c("subj_drug")))
 
   # split
   vent_jn <- split.data.frame(vent_j, as.factor(vent_j$subj_drug))
 
   # normalize: 0 injection
-  baseline <- 30 * 60 # 30 min baseline
+  baseline <- baseline * 60 # 30 min baseline
   vent_jn <- lapply(vent_jn, function(x){
       # start_time <- min(x[["timecpu_s"]], na.rm = TRUE)
       # x[, "time_s"] <- x[["time_s"]] - start_time
