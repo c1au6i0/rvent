@@ -3,9 +3,9 @@
 #' summarize_vent creates duration intervals, filters and summarize a list of vent objects returned by import_vent.
 #'
 #' @param dat a list of vent dataframes as returned by import_session.
-#' @param baseline length of baseline in minutes
-#' @param bin length of bins in minutes
-#' @param inter logical
+#' @param baseline length of baseline in minutes.
+#' @param bin length of bins in minutes.
+#' @param inter logical.
 #' @param form stat for summarizing the data.
 #' @return a list of dataframes:
 #' \enumerate{
@@ -80,7 +80,7 @@ summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "m
     file_p <- svDialogs::dlg_dir()$res
 
     setwd(file_p)
-    writexl::write_xlsx(dat_fs, "summary.xlsx")
+    writexl::write_xlsx(dat_fs, paste0("summary_", as.character(dat_vent$cpu_date[1]), ".xlsx"))
   } else {
     return(list(dat_long = dat_long, dat_vent = dat_vent, dat_sm = dat_sm, dat_fs = dat_fs))
   }

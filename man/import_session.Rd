@@ -4,15 +4,15 @@
 \alias{import_session}
 \title{Import iox session.}
 \usage{
-import_session(baseline = 30, inter = TRUE, iox_folder, comments_tsd,
+import_session(iox_folder, baseline = 30, inter = TRUE, comments_tsd,
   tofill)
 }
 \arguments{
+\item{iox_folder}{path to folder for saving data, used if inter = FALSE.}
+
 \item{baseline}{Length of baseline in minutes.}
 
 \item{inter}{logical for using or  not dialogs to input data and select folders.}
-
-\item{iox_folder}{path to folder for saving data, used if inter = FALSE.}
 
 \item{comments_tsd}{vector of comments that contain doses, used if inter = FALSE.}
 
@@ -22,5 +22,5 @@ import_session(baseline = 30, inter = TRUE, iox_folder, comments_tsd,
 A list of dataframes of class iox.
 }
 \description{
-Import txt files created by the software IOX and return a list of dataframes of class iox.
+Import txt files created by the software SCIREQ and return a list of dataframes of class iox.
 }

@@ -10,11 +10,11 @@ summarize_vent(dat, inter = TRUE, baseline = 30, bin = 3,
 \arguments{
 \item{dat}{a list of vent dataframes as returned by import_session.}
 
-\item{inter}{logical}
+\item{inter}{logical.}
 
-\item{baseline}{length of baseline in minutes}
+\item{baseline}{length of baseline in minutes.}
 
-\item{bin}{length of bins in minutes}
+\item{bin}{length of bins in minutes.}
 
 \item{form}{stat for summarizing the data.}
 }
@@ -29,5 +29,5 @@ a list of dataframes:
 }
 }
 \description{
-summarize_vent creates duration intervals, filters and summarize a list of vent objects obtained by import_vent.
+summarize_vent creates duration intervals, filters and summarize a list of vent objects returned by import_vent.
 }

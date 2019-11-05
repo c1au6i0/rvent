@@ -1,6 +1,6 @@
 Package: rvent
 Type: Package
-Title: Analyze and vsualize data recorded with IOX plethysmograph
+Title: Analyze and vsualize data recorded with SCIREQ pletysmograph
 Version: 0.0.0.9000
 Author: claudio_zanettini
 Maintainer: claudio_zanettini <claudio.zanettini@gmail.com>
@@ -20,9 +20,11 @@ Imports:
     vroom,
     writexl,
     ggplot2,
-    svDialogs
+    svDialogs,
+    readxl,
+    purrr,
+    rio
 Remotes: SciViews/svDialogs
 RoxygenNote: 6.1.1
 Suggests: 
     testthat (>= 2.1.0)
-

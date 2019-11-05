@@ -21,5 +21,5 @@ session_plots(dat, inter = TRUE, path, baseline = 30, bin = 3)
 plots
 }
 \description{
-session_plots create plotz of iox objects
+session_plots create plots from objects returned by import_session.
 }

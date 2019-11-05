@@ -1,6 +1,6 @@
 #' Import iox session.
 #'
-#' Import txt files created by the software IOX and return a list of dataframes of class iox.
+#' Import txt files created by the software SCIREQ and return a list of dataframes of class iox.
 #'
 #' @param baseline Length of baseline in minutes.
 #' @param inter logical for using or  not dialogs to input data and select folders.
@@ -10,7 +10,7 @@
 #' @return A list of dataframes of class iox.
 #' @importFrom rlang .data
 #' @export
-import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd, tofill){
+import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd, tofill){
 
   if (inter == FALSE){
     if (missing(iox_folder)) stop("iox_folder missing!")
@@ -18,8 +18,6 @@ import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd
   svDialogs::dlg_message("Choose folder containing  iox.txt files of the session.", type = "ok")
   iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
   }
-
-  browser()
 
   list_files <- list.files(iox_folder, full.names = TRUE)
   files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
@@ -149,7 +147,7 @@ import_session <- function(baseline = 30, inter = TRUE, iox_folder, comments_tsd
       # x[, "time_inj"] <- as.numeric(x[["time_inj"]]) - start_time
       # x[, "start_time"] <- start_time
       x[, "time_s"] <- x[["timecpu_s"]] - x[["time_inj"]]
-      x <-   x[x$time_s >= -baseline, ]
+      x <-   x[x$time_s >= - baseline, ]
       class(x) <- c(unlist(class(x)), "iox")
       return(x)
   })

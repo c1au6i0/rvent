@@ -1,8 +1,8 @@
 #' find_bins in vent dataframes.
 #'
-#' find_bins creates left closed duration intervals and filters the dataframe obtained by import_vent.
+#' find_bins creates left closed duration intervals and filters the dataframe returned by import_vent.
 #'
-#' @param dat dataframe as returned by \code{\linl{import_session}}.
+#' @param dat dataframe as returned by \code{\link{import_session}}.
 #' @param baseline baseline duration in minutes.
 #' @param bin bin duration in minutes.
 #' @return a dataframe with a column "int_min" indicating the left limit of the interval in minutes and, a

@@ -35,13 +35,12 @@ library(rvent)
 sess1 <- import_session() 
 
 # open a series of interactive windows to select bin and baseline duration,
-# missing info regarding drug treatments and summarizes the data
-# in an excel file
+# missing info and drug treatments. Summarizes the data in an excel file
 summarize_vent(sess1)
 
 # for each subject creates a plot with 20 facets corresponding to the 20 recorded
 # variables
-session_plots(sess1, svDialogs::dlg_dir()$dir)
+session_plots(sess1)
 ```
 
 ## Summary Excel file
@@ -50,6 +49,13 @@ This is how a summary excel file looks. Bin is 30 minute, subjects are
 Alex\_DeLarge and Georgie and the drug administered is milk\_plus.
 
 <img src="man/figures/excel.png" width="100%" />
+
+You can bind toghter multiple excel-summary files into a single file by
+moving them into the same folder and then running:
+
+``` r
+bind_summary()
+```
 
 ## Plot
 

@@ -35,11 +35,11 @@ validate_vent <- function(dat){
                        "mean", "median", "sd", "n", "baseline", "bin")
 
    if(!identical(expected_names,row.names(obtained))) {
-     stop("Expected columns names are: ", paste(row.names(expected_vent), collapse = ", "))
+     stop("Expected columns names are: ", paste(row.names(expected_names), collapse = ", "))
    }
 
    if(!identical(expected_vent[[1]], obtained[[1]])){
-     stop("Expecting data type: ", paste(expected_vent[[1]], collapse = ", "))
+     stop("Expecting data type: ", paste(expected_types, collapse = ", "))
    }
 
    if (!any(!c("bin", "baseline") %in% names(attributes(dat_vent)))) stop("Attributes bin and/or baseline missing!")
