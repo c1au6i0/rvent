@@ -1,43 +1,45 @@
-#' Import iox session.
+#' read iox txt files.
 #'
-#' Import txt files created by the software SCIREQ and return a list of dataframes of class iox.
+#' get_iox reads and merges files created by the software SCIREQ. It return a dataframe. The function is used internally by
+#' \code{\link{import_session}}
 #'
-#' @param baseline Length of baseline in minutes.
-#' @param inter logical for using or  not dialogs to input data and select folders.
 #' @param iox_folder path to folder for saving data, used if inter = FALSE.
-#' @param comments_tsd vector of comments that contain doses, used if inter = FALSE.
-#' @param tofill vector of values to replace missing data in comments_tsd, used if inter = FALSE.
-#' @return A list of dataframes of class iox.
+#' @param baseline Length of baseline in minutes.
+#' @return a dataframes.
+#' @seealso
+#' * [inj_comments()].
+#' * [normalizetime_vent()].
+#' * [import_session()].
 #' @importFrom rlang .data
 #' @export
-import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd, tofill){
-
-  if (inter == FALSE){
-    if (missing(iox_folder)) stop("iox_folder missing!")
-  } else {
-  svDialogs::dlg_message("Choose folder containing  iox.txt files of the session.", type = "ok")
-  iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
-  }
-
+get_iox <- function(iox_folder, baseline = 30) {
   list_files <- list.files(iox_folder, full.names = TRUE)
   files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
 
-  if(length(files_imp) == 0) stop(svDialogs::dlgMessage("There are not iox files
-                                                          Make sure to have files that end with iox.txt", type = "ok")$res)
+  if (length(files_imp) == 0)
+    stop(
+      svDialogs::dlgMessage(
+        "There are not iox files
+                                                          Make sure to have files that end with iox.txt",
+        type = "ok"
+      )$res
+    )
 
   # not sure why it appears that files have different columns.
   # this is a workaround that
   # extract name and drug form cell 16,7
-  subj_info  <- lapply(files_imp, vroom::vroom,
-              skip = 15,
-              n_max = 1,
-              delim = "\t",
-              col_names = FALSE,
-              col_select = "X7",
-              col_types = c(X7 = "c")
-              )
+  subj_info  <- lapply(
+    files_imp,
+    vroom::vroom,
+    skip = 15,
+    n_max = 1,
+    delim = "\t",
+    col_names = FALSE,
+    col_select = "X7",
+    col_types = c(X7 = "c")
+  )
 
-  subj_info2 <- lapply(subj_info, function(x) unlist(x)[[1]][1])
+  subj_info2 <-  lapply(subj_info, function(x) unlist(x)[[1]][1])
   subj <- stringr::str_extract(subj_info2, "[[:digit:]]+")
   drug <- stringr::str_extract(subj_info2, "[[:alpha:]]{4,}")
 
@@ -82,53 +84,71 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
   vent$string_type <- tidyr::replace_na(vent$string_type, 0)
 
   # comments
-  comments <- unique(vent$info[vent$string_type == c("comment")])
+  # comments <- unique(vent$info[vent$string_type == c("comment")])
 
-  # All this is to identify where the injection was given based on comments.
-  # tsd = time_injection subject and drug
+  return(vent)
 
-  if (inter == FALSE){
-    if (missing(comments_tsd)) stop("comments_tsd missing!")
-    if (length(comments_tsd) == 0) stop("no injection time!")
-  } else {
-    comments_tsd <- svDialogs::dlg_list(stats::na.omit(comments), multiple = TRUE, title = "Choose the comments containing subject and drug administered")$res
-  }
+}
 
-  # tsd = time_injection subject and drug
-  # type of comments: ray1 heroin 600 ug/kg, rat 3 heroin 600 ug/kg, rats 9 and 11 - heroin 600 ug/kg
-  # some comments indicate that at the same time 2 subjects have been injected. These comments have "AND"
+#' get the time of injection.
+#'
+#' inj_comments discovers the time of the injection of a dataframe returned by \code{\link{get_iox}}
+#' by finding the position of comments (comments_tsd) with subject, drug, dose and units.  The function is used internally
+#' by  \code{\link{import_session}}
+#'
+#' @param dat a dataframe returned by \code{\link{get_iox}}.
+#' @param comments_tsd the comments in the dataframe that refers to subject, drug, dose and units at \strong{time of the injection}.
+#' @return a dataframe tsd_s
+#' @seealso
+#' * [get_iox()].
+#' * [normalizetime_vent()].
+#' * [import_session()].
+#' @importFrom rlang .data
+#' @export
+inj_comments <- function(dat, comments_tsd){
 
-  tsd <- vent[vent$info %in% comments_tsd, c("timecpu_s","info")]
+    vent <- dat
+    # tsd = time_injection subject and drug
+    # type of comments: ray1 heroin 600 ug/kg, rat 3 heroin 600 ug/kg, rats 9 and 11 - heroin 600 ug/kg
+    # some comments indicate that at the same time 2 subjects have been injected. These comments have "AND"
 
-  # if there are 2 subjects in the same comment
-  toadd <- tsd[stringr::str_detect(tsd$info, "and"),]
-  toadd$info <- stringr::str_extract(toadd$info, "(?<=and ).*")
-  tsd <- rbind(tsd, toadd)
+    tsd <- vent[vent$info %in% comments_tsd, c("timecpu_s","info")]
 
-  tsd$info <- stringr::str_remove_all(tsd$info, "(\\sand\\s[0-9]+\\s)")
-  tsd$info <- stringr::str_remove_all(tsd$info, "^([:alpha:]{3,4}\\s)|^[:alpha:]{3,4}") # rat rats or ray
-  tsd$info <- stringr::str_remove_all(tsd$info, "(?!/)[:punct:]")
+    # if there are 2 subjects in the same comment
+    toadd <- tsd[stringr::str_detect(tsd$info, "and"),]
+    toadd$info <- stringr::str_extract(toadd$info, "(?<=and ).*")
+    tsd <- rbind(tsd, toadd)
 
-  # now we split the comment, tsd_s = tsd separated
-  tsd_s <- tidyr::separate(tsd, .data$info, c("subj", "drug", "dose", "unit"), fill = "right", extra = "merge")
+    tsd$info <- stringr::str_remove_all(tsd$info, "(\\sand\\s[0-9]+\\s)")
+    tsd$info <- stringr::str_remove_all(tsd$info, "^([:alpha:]{3,4}\\s)|^[:alpha:]{3,4}") # rat rats or ray
+    tsd$info <- stringr::str_remove_all(tsd$info, "(?!/)[:punct:]")
 
-  # Replace any missing information
-  na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
+    # now we split the comment, tsd_s = tsd separated
+    tsd_s <- tidyr::separate(tsd, .data$info, c("subj", "drug", "dose", "unit"), fill = "right", extra = "merge")
 
-  if(inter == FALSE){
-    if (missing(tofill)) stop("tofill missing!")
-    tsd_s[is.na(tsd_s)] <- tofill
-    }else{
-      if (nrow(na_pos) > 0) {
-        for (x in as.numeric(unique(na_pos$row))) {
-          mesg <-  paste(list("subj =","; drug =", "; dose =", "; unit ="), unlist(tsd_s[x, 2:ncol(tsd_s)]), collapse = " ")
-          tofill <- svDialogs::dlg_input(paste0("Enter any missing values (NA) in:  ", mesg))$res
-          tofill <- unlist(strsplit(tofill, " "))
-          prova <- is.na(tsd_s[x,])
-          tsd_s[x, as.vector(is.na(tsd_s[x,]))] <- tofill}
-      }
-    }
+    return(tsd_s)
+}
 
+#' normalize time of injection.
+#'
+#' normalizetime_vent tidies up a dataframe returned by \code{\link{get_iox}} and creates a column of time from injection in seconds
+#' The function is used internally by \code{\link{import_session}}
+#'
+#' @param dat a dataframe returned by \code{\link{get_iox}}.
+#' @param tsd_s the dataframe returned by \code{\link{inj_comments}}.
+#' @param tofill vector of values to replace missing data in comments_tsd, used if inter = FALSE.
+#' @param baseline Length of baseline in minutes.
+#' @return a dataframe.
+#' @seealso
+#' * [get_iox()].
+#' * [inj_comments()].
+#' * [import_session()].
+#' @importFrom rlang .data
+#' @export
+normalizetime_vent <- function(dat, tsd_s, tofill, baseline) {
+
+  vent <- dat
+  if(!is.null(tofill)) tsd_s[is.na(tsd_s)] <- tofill
   names(tsd_s)[names(tsd_s) == "timecpu_s"] <- "time_inj"
   tsd_s[, "subj_drug"] <- as.factor(paste0("rat", tsd_s$subj, "_", tsd_s$drug))
 
@@ -142,20 +162,84 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
   # normalize: 0 injection
   baseline <- baseline * 60 # 30 min baseline
   vent_jn <- lapply(vent_jn, function(x){
-      # start_time <- min(x[["timecpu_s"]], na.rm = TRUE)
-      # x[, "time_s"] <- x[["time_s"]] - start_time
-      # x[, "time_inj"] <- as.numeric(x[["time_inj"]]) - start_time
-      # x[, "start_time"] <- start_time
-      x[, "time_s"] <- x[["timecpu_s"]] - x[["time_inj"]]
-      x <-   x[x$time_s >= - baseline, ]
-      class(x) <- c(unlist(class(x)), "iox")
-      return(x)
+    # start_time <- min(x[["timecpu_s"]], na.rm = TRUE)
+    # x[, "time_s"] <- x[["time_s"]] - start_time
+    # x[, "time_inj"] <- as.numeric(x[["time_inj"]]) - start_time
+    # x[, "start_time"] <- start_time
+    x[, "time_s"] <- x[["timecpu_s"]] - x[["time_inj"]]
+    x <-   x[x$time_s >= - baseline, ]
+    class(x) <- c(unlist(class(x)), "iox")
+    return(x)
   })
   class(vent_jn) <- c(unlist(class(vent_jn)), "iox")
   vent_jn
 }
 
+#' Import iox session.
+#'
+#' Import txt files created by the software SCIREQ and return a list of dataframes of class iox.
+#'
+#' @param baseline Length of baseline in minutes.
+#' @param inter logical for using or  not dialogs to input data and select folders.
+#' @param iox_folder path to folder for saving data, used if inter = FALSE.
+#' @param comments_tsd vector of comments that contain doses, used if inter = FALSE.
+#' @param tofill vector of values to replace missing data in comments_tsd, used if inter = FALSE.
+#' @return A list of dataframes of class iox.
+#' @seealso
+#' * [get_iox()].
+#' * [inj_comments()].
+#' * [normalizetime_vent()].
+#' @importFrom rlang .data
+#' @export
+import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd, tofill = NULL){
+
+  if (inter == FALSE){
+    if (missing(iox_folder)) stop("iox_folder missing!")
+  } else {
+    svDialogs::dlg_message("Choose folder containing  iox.txt files of the session.", type = "ok")
+    iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
+  }
+
+  #----------------------------------------------#
+  vent <- get_iox(iox_folder, baseline = baseline)
+  #----------------------------------------------#
+
+  # comments
+  comments <- unique(vent$info[vent$string_type == c("comment")])
+
+  # All this is to identify where the injection was given based on comments.
+  # tsd = time_injection subject and drug
+
+  if (inter == FALSE){
+    if (missing(comments_tsd)) stop("comments_tsd missing!")
+    if (length(comments_tsd) == 0) stop("no injection time!")
+  } else {
+    comments_tsd <- svDialogs::dlg_list(stats::na.omit(comments), multiple = TRUE, title = "Choose the comments containing subject and drug administered")$res
+  }
+
+  #----------------------------------------------#
+  tsd_s <- inj_comments(dat = vent, comments_tsd)
+  #----------------------------------------------#
 
 
+  na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
+  if(inter == TRUE){
+        if (nrow(na_pos) > 0) {
+          for (x in as.numeric(unique(na_pos$row))) {
+            mesg <-  paste(list("subj =","; drug =", "; dose =", "; unit ="), unlist(tsd_s[x, 2:ncol(tsd_s)]), collapse = " ")
+            tofill <- svDialogs::dlg_input(paste0("Enter any missing values (NA) in:  ", mesg))$res
+            tofill <- unlist(strsplit(tofill, " "))
+            prova <- is.na(tsd_s[x,])
+            tsd_s[x, as.vector(is.na(tsd_s[x,]))] <- tofill}
+        } else {
+          tofill <- NULL
+        }
+      }
+
+  vent_jn <- normalizetime_vent(dat = vent, tsd_s = tsd_s, tofill = tofill, baseline = baseline)
+
+  return(vent_jn)
+
+}
 
 

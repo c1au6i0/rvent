@@ -38,7 +38,7 @@ validate_vent <- function(dat){
      stop("Expected columns names are: ", paste(row.names(expected_names), collapse = ", "))
    }
 
-   if(!identical(expected_vent[[1]], obtained[[1]])){
+   if(!identical(expected_types, obtained[[1]])){
      stop("Expecting data type: ", paste(expected_types, collapse = ", "))
    }
 

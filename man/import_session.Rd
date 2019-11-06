@@ -5,7 +5,7 @@
 \title{Import iox session.}
 \usage{
 import_session(iox_folder, baseline = 30, inter = TRUE, comments_tsd,
-  tofill)
+  tofill = NULL)
 }
 \arguments{
 \item{iox_folder}{path to folder for saving data, used if inter = FALSE.}
@@ -23,4 +23,9 @@ A list of dataframes of class iox.
 }
 \description{
 Import txt files created by the software SCIREQ and return a list of dataframes of class iox.
+}
+\seealso{
+* [get_iox()].
+* [inj_comments()].
+* [normalizetime_vent()].
 }
