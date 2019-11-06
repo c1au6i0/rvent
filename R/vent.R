@@ -17,7 +17,7 @@
 #' @export new_vent
 new_vent <- function(dat = data.frame()) {
   stopifnot(is.data.frame(dat))
-  structure(dat, class = "vent", bin = unique(dat$bin), baseline = unique(dat$baseline))
+  structure(dat, class = c("data.frame","vent"), bin = unique(dat$bin), baseline = unique(dat$baseline))
 }
 
 #' vent validator
@@ -27,6 +27,7 @@ new_vent <- function(dat = data.frame()) {
 #' @param dat object
 #' @export validate_vent
 validate_vent <- function(dat){
+
    obtained <- as.data.frame(sapply(dat, typeof))
 
    expected_types <- c("double", "character", "character", "character", "character", "double", "integer", "double",
@@ -38,7 +39,7 @@ validate_vent <- function(dat){
      stop("Expected columns names are: ", paste(row.names(expected_names), collapse = ", "))
    }
 
-   if(!identical(expected_types, obtained[[1]])){
+   if(!identical(expected_types, as.character(obtained[[1]]))){
      stop("Expecting data type: ", paste(expected_types, collapse = ", "))
    }
 
