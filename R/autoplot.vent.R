@@ -8,7 +8,7 @@
 #' @import ggplot2
 #' @method vent data.frame
 #' @aliases autoplot
-#' @usage autoplot(dat = dat_vent, fsave = FALSE)
+#' @usage autoplot.vent(dat, fsave = TRUE)
 #' @export autoplot.vent
 autoplot.vent <-function(dat, fsave = TRUE){
 
