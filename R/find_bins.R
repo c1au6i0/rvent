@@ -12,42 +12,39 @@
 #' @export
 find_bins <- function(dat, baseline, bin) {
 
-   # filter based on some acceptance criteria in rats
-   dat <- dat[
-         dat$TV_ml >= 0.04 &
-         dat$TV_ml <= 10 &
+  # filter based on some acceptance criteria in rats
+  dat <- dat[
+    dat$TV_ml >= 0.04 &
+      dat$TV_ml <= 10 &
 
-         dat$f_bpm >= 10 &
-         dat$f_bpm <= 250 &
+      dat$f_bpm >= 10 &
+      dat$f_bpm <= 250 &
 
-         dat$Ti_msec >= 100 &
-         dat$Ti_msec <= 2000 &
+      dat$Ti_msec >= 100 &
+      dat$Ti_msec <= 2000 &
 
-         dat$Te_msec >= 120 &
-         dat$Te_msec <= 2000,
+      dat$Te_msec >= 120 &
+      dat$Te_msec <= 2000,
+  ]
 
-         ]
+  dat <- dat[!is.na(dat$time_s), ]
 
-   dat <- dat[!is.na(dat$time_s), ]
+  # is bin a multiple of the length of th session?
+  # first and last full interval...rounded at a minute (so it can be up to 24 sec off)
+  min_m <- round(min(dat$time_s) / 60 / bin) * bin
+  max_m <- round(max(dat$time_s) / 60 / bin) * bin
 
-   # is bin a multiple of the length of th session?
-   # first and last full interval...rounded at a minute (so it can be up to 24 sec off)
-   min_m <- round(min(dat$time_s)/60/bin) * bin
-   max_m <- round(max(dat$time_s)/60/bin) * bin
+  dat <- dat[dat$time_s >= min_m * 60 &
+    dat$time_s <= max_m * 60, ]
 
-   dat <-  dat[dat$time_s >= min_m * 60 &
-                  dat$time_s <= max_m * 60, ]
-
-   # interval
-   intv  <- seq(min_m * 60, max_m * 60, by = bin * 60)
+  # interval
+  intv <- seq(min_m * 60, max_m * 60, by = bin * 60)
 
 
-   dat$intv <- findInterval(dat$time_s, intv)
+  dat$intv <- findInterval(dat$time_s, intv)
 
-   # recode
-   dat[,"int_min"] <- recode_col(dat$intv, intv)/60
-   dat[, "int_sec"] <- cut(dat$time_s, intv)
-   return(dat)
+  # recode
+  dat[, "int_min"] <- recode_col(dat$intv, intv) / 60
+  dat[, "int_sec"] <- cut(dat$time_s, intv)
+  return(dat)
 }
-
-

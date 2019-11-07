@@ -12,7 +12,7 @@ import_session(iox_folder, baseline = 30, inter = TRUE, comments_tsd,
 
 \item{baseline}{Length of baseline in minutes.}
 
-\item{inter}{logical for using or  not dialogs to input data and select folders.}
+\item{inter}{logical for using or not dialogs to input data and select folders.`}
 
 \item{comments_tsd}{vector of comments that contain doses, used if inter = FALSE.}
 

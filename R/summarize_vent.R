@@ -20,9 +20,8 @@
 #' @importFrom data.table as.data.table
 #' @import stats
 #' @export
-summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "mean"){
-
-  if(inter == TRUE){
+summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "mean") {
+  if (inter == TRUE) {
     baseline_bin <- svDialogs::dlg_input("Insert the baseline and the bin duration in minutes, separated by a space")$res
     baseline_bin <- as.numeric(unlist(strsplit(baseline_bin, " ")))
     baseline <- baseline_bin[1]
@@ -36,46 +35,56 @@ summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "m
   col_melt <- which(names(dat_all) %in% c("Ti_msec", "Sr_per"))
 
   # wide to long
-  dat_long <- data.table::melt(as.data.table(dat_all), measure.vars = col_melt[1]:col_melt[2],
-                               variable.name = "measure", value.name = "value")
+  dat_long <- data.table::melt(as.data.table(dat_all),
+    measure.vars = col_melt[1]:col_melt[2],
+    variable.name = "measure", value.name = "value"
+  )
 
   # first data summary
   dat_vent <- dat_long %>%
     dplyr::group_by(.data$cpu_date, .data$subj_drug, .data$dose, .data$unit, .data$int_min, .data$measure) %>%
-    dplyr::summarise(mean = mean(.data$value),
-                     median = median(.data$value),
-                     sd = sd(.data$value),
-                     n = dplyr::n(),
-                     baseline = baseline,
-                     bin = bin) %>%
+    dplyr::summarise(
+      mean = mean(.data$value),
+      median = median(.data$value),
+      sd = sd(.data$value),
+      n = dplyr::n(),
+      baseline = baseline,
+      bin = bin
+    ) %>%
     tidyr::separate(.data$subj_drug, c("subj", "drug"), remove = TRUE)
 
 
   class(dat_vent) <- c("data.frame", "vent")
 
-  if(inter == TRUE) {
-  form <- svDialogs::dlg_list(list("mean", "median", "n", "sd"), multiple = TRUE,
-                              title = "Choose how to summarize the values of each bin")$res
+  if (inter == TRUE) {
+    form <- svDialogs::dlg_list(list("mean", "median", "n", "sd"),
+      multiple = TRUE,
+      title = "Choose how to summarize the values of each bin"
+    )$res
   }
 
   # data summary longer
-  suppressWarnings(dat_sm  <- data.table::melt(as.data.table(dat_vent), measure.vars = c("mean", "median", "sd", "n"),
-                              variable.name = "stat", value.name = "value") %>%
-             dplyr::filter(.data$stat %in% form) %>%
-             dplyr:: arrange(as.numeric(.data$int_min), .data$stat) %>%
-             tidyr::unite("int_stat", .data$int_min, .data$stat, sep = "_"))
+  suppressWarnings(dat_sm <- data.table::melt(as.data.table(dat_vent),
+    measure.vars = c("mean", "median", "sd", "n"),
+    variable.name = "stat", value.name = "value"
+  ) %>%
+    dplyr::filter(.data$stat %in% form) %>%
+    dplyr::arrange(as.numeric(.data$int_min), .data$stat) %>%
+    tidyr::unite("int_stat", .data$int_min, .data$stat, sep = "_"))
 
   # reorder levels
   dat_sm$int_stat <- factor(dat_sm$int_stat, levels = unique(dat_sm$int_stat))
 
   dat_sm <- data.table::dcast(as.data.table(dat_sm),
-                               cpu_date + subj + drug + dose + unit +  measure ~ int_stat, value.var = "value")
+    cpu_date + subj + drug + dose + unit + measure ~ int_stat,
+    value.var = "value"
+  )
 
   # Split and long to wide again
   suppressWarnings(dat_fs <- split.data.frame(dat_sm, dat_sm$measure))
 
   # dat_sm is the datgrame used to make plots
-  if(inter == TRUE) {
+  if (inter == TRUE) {
     svDialogs::dlg_message("Next select the folder where to save the summary", type = "ok")$res
     file_p <- svDialogs::dlg_dir()$res
 
@@ -85,4 +94,3 @@ summarize_vent <- function(dat, inter = TRUE,  baseline = 30, bin = 3, form = "m
     return(list(dat_long = dat_long, dat_vent = dat_vent, dat_sm = dat_sm, dat_fs = dat_fs))
   }
 }
-
