@@ -23,6 +23,7 @@ autoplot.vent <- function(dat, fsave = TRUE) {
     geom_point() +
     geom_line() +
     geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd)) +
+    geom_vline(xintercept = 0.5, lty = 4, lwd = 0.5) +
     scale_x_continuous(labels = labs, breaks = labs) +
     facet_wrap(vars(measure), ncol = 4, scales = "free_y") +
     labs(title = title, y = "mean +/- stdev", x = "minutes") +
