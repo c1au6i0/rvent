@@ -119,7 +119,7 @@ inj_comments <- function(dat, comments_tsd) {
   toadd$info <- stringr::str_extract(toadd$info, "(?<=and ).*")
   tsd <- rbind(tsd, toadd)
 
-  tsd$info <- stringr::str_remove_all(tsd$info, "(\\sand\\s[0-9]+\\s)")
+  tsd$info <- stringr::str_remove_all(tsd$info, "(and\\s[0-9]+\\s)")
   tsd$info <- stringr::str_remove_all(tsd$info, "^([:alpha:]{3,4}\\s)|^[:alpha:]{3,4}") # rat rats or ray
   tsd$info <- stringr::str_remove_all(tsd$info, "(?!/)[:punct:]")
 
@@ -219,6 +219,9 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
   tsd_s <- inj_comments(dat = vent, comments_tsd)
   #----------------------------------------------#
 
+  # filter in case analyzing subj from different sessions and so more comments
+  un_subj <- stringr::str_extract(unique(vent$subj_drug), "[0-9]+")
+  tsd_s <- tsd_s[tsd_s$subj %in%  un_subj, ]
 
   na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
   if (inter == TRUE) {
