@@ -100,7 +100,7 @@ get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
 #' @param tsd dataframe of comments (2 columns).
 #' @param detec regexp for detecting rows with multiple subjects
 #' @param sep regexp  for separating subjects from rest
-#' @rem the string to remove
+#' @param rem the string to remove
 #' @return a dataframe tsd_s
 #' @importFrom rlang .data
 #' @export

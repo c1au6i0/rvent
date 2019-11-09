@@ -4,19 +4,17 @@
 \alias{inj_comments}
 \title{get the time of injection.}
 \usage{
-inj_comments(dat, comments_tsd)
+inj_comments(dat)
 }
 \arguments{
 \item{dat}{a dataframe returned by \code{\link{get_iox}}.}
-
-\item{comments_tsd}{the comments in the dataframe that refers to subject, drug, dose and units at \strong{time of the injection}.}
 }
 \value{
 a dataframe tsd_s
 }
 \description{
 inj_comments discovers the time of the injection of a dataframe returned by \code{\link{get_iox}}
-by finding the position of comments (comments_tsd) with subject, drug, dose and units.  The function is used internally
+by finding the position of comments (comments_tsd) containing subject, drug, dose and units.  The function is used internally
 by  \code{\link{import_session}}
 }
 \seealso{

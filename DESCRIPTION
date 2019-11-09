@@ -1,7 +1,7 @@
 Package: rvent
 Type: Package
 Title: Analyze and vsualize data recorded with SCIREQ pletysmograph
-Version: 0.0.0.9000
+Version: 0.0.1.9000
 Author: claudio_zanettini
 Maintainer: claudio_zanettini <claudio.zanettini@gmail.com>
 Description: Functions to import, analyze and visualize data of plethysmograph. 
