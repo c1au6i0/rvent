@@ -98,7 +98,6 @@ get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
 #' by  \code{\link{import_session}}
 #'
 #' @param dat a dataframe returned by \code{\link{get_iox}}.
-#' @param comments_tsd the comments in the dataframe that refers to subject, drug, dose and units at \strong{time of the injection}.
 #' @return a dataframe tsd_s
 #' @seealso
 #' * [get_iox()].
@@ -106,13 +105,21 @@ get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
 #' * [import_session()].
 #' @importFrom rlang .data
 #' @export
-inj_comments <- function(dat, comments_tsd) {
+inj_comments <- function(dat) {
+
   vent <- dat
+
+  comments <- stats::na.omit(unique(vent$info[vent$string_type == c("comment")]))
+
+  # eliminate comments without subjects (i.e. numbers)
+  comments <- comments[stringr::str_detect(comments, "[1-9]")]
+
   # tsd = time_injection subject and drug
   # type of comments: ray1 heroin 600 ug/kg, rat 3 heroin 600 ug/kg, rats 9 and 11 - heroin 600 ug/kg
   # some comments indicate that at the same time 2 subjects have been injected. These comments have "AND"
+  # other have multiple numbers with multiple subjects
 
-  tsd <- vent[vent$info %in% comments_tsd, c("timecpu_s", "info")]
+  tsd <- vent[vent$info %in% comments, c("timecpu_s", "info")]
   tsd$info <- stringr::str_remove_all(tsd$info, "^([:alpha:]{3,4}\\s)|^[:alpha:]{3,4}") # rat rats or ray
 
   # this is a mess! In case of "rats 1 2 3 4 drug dose unit"
@@ -149,7 +156,7 @@ inj_comments <- function(dat, comments_tsd) {
 
 
   # now we split the comment, tsd_s = tsd separated
-  tsd_s<- tidyr::separate(tsd, .data$info, c("drug", "dose", "unit"), fill = "right", extra = "merge")
+  tsd_s <- tidyr::separate(tsd, .data$info, c("drug", "dose", "unit"), fill = "right", extra = "merge")
 
   rm_subj <- stringr::str_extract(unique(vent$subj_drug), "[0-9]+")
   tsd_s <- tsd_s[tsd_s$subj %in%  rm_subj, ]
@@ -230,37 +237,34 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
   vent <- get_iox(iox_folder, baseline = baseline)
   #----------------------------------------------#
 
-  # comments
-  comments <- unique(vent$info[vent$string_type == c("comment")])
-
   # All this is to identify where the injection was given based on comments.
   # tsd = time_injection subject and drug
 
+  #----------------------------------------------#
+  choose_comments <- inj_comments(dat = vent)
+  #----------------------------------------------#
+
+  choose_comments <- tidyr::unite(choose_comments, col = "subj_drug_dose_unit", .data$subj, .data$drug, .data$dose,.data$unit, sep= " " )
 
   if (inter == FALSE) {
     if (missing(comments_tsd)) stop("comments_tsd missing!")
     if (length(comments_tsd) == 0) stop("no injection time!")
   } else {
-    comments_tsd <- svDialogs::dlg_list(stats::na.omit(comments), multiple = TRUE, title = "Choose the comments containing subject and drug administered")$res
+    comments_tsd <- svDialogs::dlg_list(choose_comments$subj_drug_dose_unit, multiple = TRUE, title = "Choose the comments containing subject and drug administered")$res
   }
 
+  tsd_s <- choose_comments[choose_comments$subj_drug_dose_unit %in% comments_tsd,]
 
-  comments_tsd <- stats::na.omit(comments)
+  tsd_s <- tidyr::separate(tsd_s, .data$subj_drug_dose_unit, c("subj", "drug", "dose", "unit"), fill = "right", extra = "merge")
 
-  #----------------------------------------------#
-  tsd_s <- inj_comments(dat = vent, comments_tsd)
-  #----------------------------------------------#
-
-  # filter in case analyzing subj from different sessions and so more comments
-  rm_subj <- stringr::str_extract(unique(vent$subj_drug), "[0-9]+")
-  tsd_s <- tsd_s[tsd_s$subj %in%  rm_subj, ]
+  tsd_s[tsd_s == "NA"] <- NA
 
   na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
   if (inter == TRUE) {
     if (nrow(na_pos) > 0) {
       for (x in as.numeric(unique(na_pos$row))) {
         mesg <- paste(list("subj =", "; drug =", "; dose =", "; unit ="), unlist(tsd_s[x, 2:ncol(tsd_s)]), collapse = " ")
-        tofill <- svDialogs::dlg_input(paste0("Enter any missing values (NA) in:  ", mesg))$res
+        tofill <- svDialogs::dlg_input(paste0("Enter any missing values (NA) in: ", mesg))$res
         tofill <- unlist(strsplit(tofill, " "))
         prova <- is.na(tsd_s[x, ])
         tsd_s[x, as.vector(is.na(tsd_s[x, ]))] <- tofill
