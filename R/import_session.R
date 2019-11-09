@@ -113,18 +113,46 @@ inj_comments <- function(dat, comments_tsd) {
   # some comments indicate that at the same time 2 subjects have been injected. These comments have "AND"
 
   tsd <- vent[vent$info %in% comments_tsd, c("timecpu_s", "info")]
-
-  # if there are 2 subjects in the same comment
-  toadd <- tsd[stringr::str_detect(tsd$info, "and"), ]
-  toadd$info <- stringr::str_extract(toadd$info, "(?<=and ).*")
-  tsd <- rbind(tsd, toadd)
-
-  tsd$info <- stringr::str_remove_all(tsd$info, "(and\\s[0-9]+\\s)")
   tsd$info <- stringr::str_remove_all(tsd$info, "^([:alpha:]{3,4}\\s)|^[:alpha:]{3,4}") # rat rats or ray
+
+  # this is a mess! In case of "rats 1 2 3 4 drug dose unit"
+  toadd2 <- tsd[stringr::str_detect(tsd$info, "[0-9]\\s[0-9]+"), ] #get comments with "number number number"
+  tsd <- dplyr::setdiff(tsd, toadd2) # remove them
+  toadd2 <- tidyr::separate(toadd2, .data$info, sep = "(?<=[0-9])\\s(?=[A-z])", c("subj", "info"),
+                           extra = "merge") # separate subject from rest
+  n_subj2 <- unlist(stringr::str_split(unlist(toadd2$subj), " ")) # create a column with subject
+  col_subj2 <- n_subj2[n_subj2 != ""]
+  rep_subj2 <- stringr::str_count(toadd2$subj, "[0-9]") # how many subjects in each comment?
+  toadd2 <- toadd2[rep(seq_len(nrow(toadd2)), rep_subj2),] # repeat rows for each subject
+  toadd2$subj <- col_subj2 # substitute subject
+
+  #  In case of "rats 1 and 2 grooming"
+  # we identify the comments, we duplicate the part after add and then we clean up at 135
+  toadd <- tsd[stringr::str_detect(tsd$info, "and"), ]
+  tsd <- dplyr::setdiff(tsd, toadd)
+  toadd <- tidyr::separate(toadd, .data$info, sep = "(?<=[0-9])\\s(?=[A-z])(?!and)", c("subj", "info"),
+                            extra = "merge") # space between a number and a word that is not and
+  toadd$subj <- stringr::str_remove_all(toadd$subj, "and")
+  n_subj <- unlist(stringr::str_split(unlist(toadd$subj), " ")) # create a column with subject
+  col_subj <- n_subj[n_subj != ""]
+  rep_subj <- stringr::str_count(toadd$subj, "[0-9]")
+  toadd <- toadd[rep(seq_len(nrow(toadd)), rep_subj),]
+  toadd$subj <- col_subj
+
+  tsd <- tidyr::separate(tsd, .data$info, sep = "(?<=[0-9])\\s", c("subj", "info"),
+                           extra = "merge")
+
+  tsd <- do.call(rbind, list(tsd, toadd, toadd2))
+
+
   tsd$info <- stringr::str_remove_all(tsd$info, "(?!/)[:punct:]")
 
+
   # now we split the comment, tsd_s = tsd separated
-  tsd_s <- tidyr::separate(tsd, .data$info, c("subj", "drug", "dose", "unit"), fill = "right", extra = "merge")
+  tsd_s<- tidyr::separate(tsd, .data$info, c("drug", "dose", "unit"), fill = "right", extra = "merge")
+
+  rm_subj <- stringr::str_extract(unique(vent$subj_drug), "[0-9]+")
+  tsd_s <- tsd_s[tsd_s$subj %in%  rm_subj, ]
 
   return(tsd_s)
 }
@@ -208,6 +236,7 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
   # All this is to identify where the injection was given based on comments.
   # tsd = time_injection subject and drug
 
+
   if (inter == FALSE) {
     if (missing(comments_tsd)) stop("comments_tsd missing!")
     if (length(comments_tsd) == 0) stop("no injection time!")
@@ -215,13 +244,16 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
     comments_tsd <- svDialogs::dlg_list(stats::na.omit(comments), multiple = TRUE, title = "Choose the comments containing subject and drug administered")$res
   }
 
+
+  comments_tsd <- stats::na.omit(comments)
+
   #----------------------------------------------#
   tsd_s <- inj_comments(dat = vent, comments_tsd)
   #----------------------------------------------#
 
   # filter in case analyzing subj from different sessions and so more comments
-  un_subj <- stringr::str_extract(unique(vent$subj_drug), "[0-9]+")
-  tsd_s <- tsd_s[tsd_s$subj %in%  un_subj, ]
+  rm_subj <- stringr::str_extract(unique(vent$subj_drug), "[0-9]+")
+  tsd_s <- tsd_s[tsd_s$subj %in%  rm_subj, ]
 
   na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
   if (inter == TRUE) {
