@@ -14,15 +14,25 @@
 #' @importFrom rlang .data
 #' @export
 get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
+
+  mess <- "Choose folder containing  iox.txt files of the session."
+  if (inter == FALSE) {
+    if (missing(iox_folder)) stop("iox_folder missing!")
+  } else {
+    svDialogs::dlg_message(mess, type = "ok")
+    iox_folder <- svDialogs::dlg_dir(title = mess)$res
+  }
+
   list_files <- list.files(iox_folder, full.names = TRUE)
   files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
 
+  mess <- "There are not iox.txt files in that folder!"
   if (length(files_imp) == 0) {
     if (inter == TRUE ) {
-    stop(svDialogs::dlgMessage("There are not iox files Make sure to have files that end with iox.txt",
+    stop(svDialogs::dlgMessage(mess,
         type = "ok")$res)
     } else {
-      stop("There are not iox files Make sure to have files that end with iox.txt")
+      stop(mess)
     }
   }
 
@@ -231,12 +241,6 @@ normalizetime_vent <- function(dat, tsd_s, tofill, baseline) {
 #' @importFrom rlang .data
 #' @export
 import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd, tofill = NULL) {
-  if (inter == FALSE) {
-    if (missing(iox_folder)) stop("iox_folder missing!")
-  } else {
-    svDialogs::dlg_message("Choose folder containing  iox.txt files of the session.", type = "ok")
-    iox_folder <- svDialogs::dlg_dir(title = "Choose folder containing  iox.txt files of the session.")$res
-  }
 
   #----------------------------------------------#
   vent <- get_iox(iox_folder, baseline = baseline)
