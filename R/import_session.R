@@ -174,14 +174,14 @@ normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
 #' @export
 import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd, tofill = NULL) {
   if (inter == TRUE) {
-    all <- get_iox(baseline)
+    all_data <- get_iox(baseline)
   } else {
-    all <- get_iox(iox_folder = iox_folder, baseline = baseline, inter = FALSE)
+    all_data <- get_iox(iox_folder = iox_folder, baseline = baseline, inter = FALSE)
   }
 
 
-  vent <- all$vent
-  choose_comments <- all$tsd_s
+  vent <- al_datal$vent
+  choose_comments <- all_data$tsd_s
   #----------------------------------------------#
 
   choose_comments <- tidyr::unite(choose_comments, col = "subj_drug_dose_unit", .data$subj, .data$drug, .data$dose, .data$unit, sep = " ")
