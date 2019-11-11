@@ -29,5 +29,5 @@ a list of dataframes:
 }
 }
 \description{
-summarize_vent creates duration intervals, filters and summarize a list of vent objects returned by import_vent.
+summarize_vent creates duration intervals, filters and summarizes a list of vent objects returned by import_vent.
 }

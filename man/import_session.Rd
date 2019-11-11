@@ -8,24 +8,19 @@ import_session(iox_folder, baseline = 30, inter = TRUE, comments_tsd,
   tofill = NULL)
 }
 \arguments{
-\item{iox_folder}{path to folder for saving data, used if inter = FALSE.}
+\item{iox_folder}{path to folder for saving data (used if inter = FALSE).}
 
-\item{baseline}{Length of baseline in minutes.}
+\item{baseline}{length of baseline in minutes.}
 
-\item{inter}{logical for using or not dialogs to input data and select folders.`}
+\item{inter}{logical for using or not dialogs to input data and select folders.}
 
-\item{comments_tsd}{vector of comments that contain doses, used if inter = FALSE.}
+\item{comments_tsd}{vector of comments that contain doses (used if inter = FALSE).}
 
-\item{tofill}{vector of values to replace missing data in comments_tsd, used if inter = FALSE.}
-}
-\value{
-A list of dataframes of class iox.
+\item{tofill}{vector of values to replace missing data in comments_tsd (used if inter = FALSE).}
 }
 \description{
-Import txt files created by the software SCIREQ and return a list of dataframes of class iox.
+Imports txt files created by the software SCIREQ and return a list of dataframes.
 }
 \seealso{
-* [get_iox()].
-* [inj_comments()].
-* [normalizetime_vent()].
+normalizetime_vent(), import_session(), split_comments().
 }

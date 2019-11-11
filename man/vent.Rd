@@ -15,7 +15,7 @@ vent(dat, ...)
 an object of class vent
 }
 \description{
-Method, constructor and validator of objects of class vent
+A dataframe as returned by \code{link{import_session()}}.
 }
 \seealso{
 autoplot.vent, new_vent, validate_vent

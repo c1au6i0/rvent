@@ -7,6 +7,10 @@
 
 [![](https://img.shields.io/badge/devel%20version-0.0.0.9000-blue.svg)](https://github.com/https://github.com/c1au6i0/rvent)
 [![](https://img.shields.io/github/last-commit/c1au6i0/rvent.svg)](https://github.com/c1au6i0/rvent/commits/master)
+[![Travis build
+status](https://travis-ci.org/c1au6i0/rvent.svg?branch=master)](https://travis-ci.org/c1au6i0/rvent)
+[![Codecov test
+coverage](https://codecov.io/gh/c1au6i0/rvent/branch/master/graph/badge.svg)](https://codecov.io/gh/c1au6i0/rvent?branch=master)
 <!-- badges: end -->
 
 The goal of rvent is to summarize, analyze and plot experimental data

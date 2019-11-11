@@ -7,21 +7,24 @@
 get_iox(iox_folder, baseline = 30, inter = TRUE)
 }
 \arguments{
-\item{iox_folder}{path to folder for saving data, used if inter = FALSE.}
+\item{iox_folder}{path to folder for saving data (used if inter = FALSE).}
 
-\item{baseline}{Length of baseline in minutes.}
+\item{baseline}{length of baseline in minutes.}
 
 \item{inter}{logical for using or not dialogs to input data and select folders.}
 }
 \value{
-a dataframes.
+a list of dataframe:
+\itemize{
+   \item vent: a list of dataframes of each of the iox files in which time_s = 0 is the start of
+   the session.
+   \item tsd_s: dataframe of all comments with each row rappresenting a
+   different subject.}
 }
 \description{
-get_iox reads and merges files created by the software SCIREQ. It return a dataframe. The function is used internally by
-\code{\link{import_session}}
+get_iox reads and merges files created by the software SCIREQ. It returns a dataframe. The function is used internally by
+\code{\link{import_session}}.
 }
 \seealso{
-* [inj_comments()].
-* [normalizetime_vent()].
-* [import_session()].
+normalizetime_vent(), import_session(), split_comments().
 }

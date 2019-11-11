@@ -1,6 +1,6 @@
 #' session_plots.
 #'
-#' session_plots create plots from objects returned by import_session.
+#' session_plots creates plots from list of vent dataframes.
 #'
 #' @param dat a iox dataframe.
 #' @param inter logical that determines if dialogs will be used.

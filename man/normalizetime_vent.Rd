@@ -4,26 +4,21 @@
 \alias{normalizetime_vent}
 \title{normalize time of injection.}
 \usage{
-normalizetime_vent(dat, tsd_s, tofill, baseline)
+normalizetime_vent(dat, tsd_s, tofill, baseline = 30)
 }
 \arguments{
 \item{dat}{a dataframe returned by \code{\link{get_iox}}.}
 
-\item{tsd_s}{the dataframe returned by \code{\link{inj_comments}}.}
+\item{tsd_s}{the dataframe of comments returned by \code{\link{get_iox}}.}
 
-\item{tofill}{vector of values to replace missing data in comments_tsd, used if inter = FALSE.}
+\item{tofill}{vector of values to replace missing data in tsd_s (used if inter = FALSE).}
 
-\item{baseline}{Length of baseline in minutes.}
-}
-\value{
-a dataframe.
+\item{baseline}{length of baseline in minutes.}
 }
 \description{
-normalizetime_vent tidies up a dataframe returned by \code{\link{get_iox}} and creates a column of time from injection in seconds
-The function is used internally by \code{\link{import_session}}
+normalizetime_vent tidies up the ataframes returned by \code{\link{get_iox}} and creates a column of time from injection in seconds.
+The function is used internally by \code{\link{import_session}}.
 }
 \seealso{
-* [get_iox()].
-* [inj_comments()].
-* [import_session()].
+get_iox(), import_session(), split_comments().
 }

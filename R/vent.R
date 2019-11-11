@@ -1,6 +1,6 @@
 #' Class vent
 #'
-#' Method, constructor and validator of objects of class vent
+#' A dataframe as returned by \code{link{import_session()}}.
 #'
 #' @param  dat an object of class dataframe
 #' @param ... dots
