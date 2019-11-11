@@ -16,7 +16,6 @@
 #' @importFrom rlang .data
 #' @export
 get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
-
   mess <- "Choose folder containing  iox.txt files of the session."
   if (inter == FALSE) {
     if (missing(iox_folder)) stop("iox_folder missing!")
@@ -30,9 +29,10 @@ get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
 
   mess <- "There are not iox.txt files in that folder!"
   if (length(files_imp) == 0) {
-    if (inter == TRUE ) {
-    stop(svDialogs::dlgMessage(mess,
-        type = "ok")$res)
+    if (inter == TRUE) {
+      stop(svDialogs::dlgMessage(mess,
+        type = "ok"
+      )$res)
     } else {
       stop(mess)
     }
@@ -103,10 +103,10 @@ get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
   tsd <- vent[vent$info %in% comments, c("timecpu_s", "info")]
   tsd$info <- stringr::str_remove_all(tsd$info, "^([:alpha:]{3,4}\\s)|^[:alpha:]{3,4}") # rat rats or ray
 
-  #"number number number"
-  tsd <- split_comments(tsd, detect = "[0-9]\\s[0-9]+", sep =  "(?<=[0-9])\\s(?=[A-z])", rem = "")
-  tsd <- tidyr::unite(tsd, "info", .data$subj, .data$info, sep = " " )
-  #space between a number and a word that is not "and"
+  # "number number number"
+  tsd <- split_comments(tsd, detect = "[0-9]\\s[0-9]+", sep = "(?<=[0-9])\\s(?=[A-z])", rem = "")
+  tsd <- tidyr::unite(tsd, "info", .data$subj, .data$info, sep = " ")
+  # space between a number and a word that is not "and"
   tsd <- split_comments(tsd, detect = "and", sep = "(?<=[0-9])\\s(?=[A-z])(?!and)", rem = "and")
 
   tsd$info <- stringr::str_remove_all(tsd$info, "(?!/)[:punct:]")
@@ -115,7 +115,7 @@ get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
   tsd_s <- tidyr::separate(tsd, .data$info, c("drug", "dose", "unit"), fill = "right", extra = "merge")
 
   rm_subj <- stringr::str_extract(unique(vent$subj_drug), "[0-9]+")
-  tsd_s <- tsd_s[tsd_s$subj %in%  rm_subj, ]
+  tsd_s <- tsd_s[tsd_s$subj %in% rm_subj, ]
 
   return(list(vent = vent, tsd_s = tsd_s))
 }
@@ -173,11 +173,10 @@ normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
 #' @importFrom rlang .data
 #' @export
 import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd, tofill = NULL) {
-
   if (inter == TRUE) {
-  all <- get_iox(baseline)
+    all <- get_iox(baseline)
   } else {
-  all <- get_iox(iox_folder = iox_folder, baseline = baseline, inter = FALSE)
+    all <- get_iox(iox_folder = iox_folder, baseline = baseline, inter = FALSE)
   }
 
 
@@ -185,7 +184,7 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
   choose_comments <- all$tsd_s
   #----------------------------------------------#
 
-  choose_comments <- tidyr::unite(choose_comments, col = "subj_drug_dose_unit", .data$subj, .data$drug, .data$dose,.data$unit, sep= " " )
+  choose_comments <- tidyr::unite(choose_comments, col = "subj_drug_dose_unit", .data$subj, .data$drug, .data$dose, .data$unit, sep = " ")
 
   if (inter == FALSE) {
     if (missing(comments_tsd)) stop("comments_tsd missing!")
@@ -194,7 +193,7 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
     comments_tsd <- svDialogs::dlg_list(choose_comments$subj_drug_dose_unit, multiple = TRUE, title = "Choose the comments containing subject and drug administered")$res
   }
 
-  tsd_s <- choose_comments[choose_comments$subj_drug_dose_unit %in% comments_tsd,]
+  tsd_s <- choose_comments[choose_comments$subj_drug_dose_unit %in% comments_tsd, ]
 
   tsd_s <- tidyr::separate(tsd_s, .data$subj_drug_dose_unit, c("subj", "drug", "dose", "unit"), fill = "right", extra = "merge")
 
