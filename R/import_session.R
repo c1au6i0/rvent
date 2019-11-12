@@ -180,7 +180,7 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
   }
 
 
-  vent <- al_datal$vent
+  vent <- all_data$vent
   choose_comments <- all_data$tsd_s
   #----------------------------------------------#
 
