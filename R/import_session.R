@@ -13,7 +13,7 @@
 #'    \item tsd_s: dataframe of all comments with each row rappresenting a
 #'    different subject.}
 #' @seealso normalizetime_vent(), import_session(), split_comments().
-#' @importFrom rlang .data
+#' @importFrom rlang
 #' @export
 get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
   mess <- "Choose folder containing  iox.txt files of the session."

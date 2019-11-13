@@ -3,15 +3,18 @@
 #' autoplot.vent plots a vent dataframe
 #'
 #' @param dat a vent dataframe.
-#' @param fsave if TRUE the function saves the figure in a pdf, otherwise returns a fig
+#' @vent_stat stat used to summarize bins to display in the y axis ("median" or "mean").
+#' @param fsave if TRUE the function saves the figure in a pdf, otherwise returns a fig.
 #' @return plot.
 #' @import ggplot2
+#' @importFrom rlang .data
 #' @method vent data.frame
 #' @aliases autoplot
-#' @usage autoplot.vent(dat, fsave = TRUE)
+#' @usage autoplot.vent(dat, vent_stat = "mean", fsave = TRUE)
 #' @export autoplot.vent
-autoplot.vent <- function(dat, fsave = TRUE) {
+autoplot.vent <- function(dat, vent_stat = "mean", fsave = TRUE) {
   if (!"vent" %in% class(dat)) stop("Object is not of class vent")
+
 
   title <- paste(as.character(dat$cpu_date[1]), dat$subj[1], dat$drug[1], dat$dose[1], dat$unit[1], sep = " ")
   file_name <- paste(as.character(dat$cpu_date[1]), dat$subj[1], dat$drug[1], dat$dose[1], sep = "_")
@@ -19,7 +22,7 @@ autoplot.vent <- function(dat, fsave = TRUE) {
 
   labs <- as.numeric(seq(min(dat$int_min), max(dat$int_min), 15))
 
-  fig <- ggplot(dat, aes_string("int_min", "mean", col = "measure")) +
+  fig <- ggplot(dat, aes_string("int_min", vent_stat, col = "measure")) +
     geom_point() +
     geom_line() +
     geom_errorbar(aes(ymin = mean - sd, ymax = mean + sd)) +
