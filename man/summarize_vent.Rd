@@ -21,10 +21,9 @@ summarize_vent(dat, inter = TRUE, baseline = 30, bin = 3,
 \value{
 a list of dataframes:
 \enumerate{
-  \item \strong{dat_long}: a dataframe of the session that contains a the column *measure* and bins.
+  \item \strong{dat_long}: a dataframe of the session that contains a column *measure* and bins.
   \item \strong{dat_vent}: a vent dataframe, in which summary stats for each bin have been calculated.
-  \item \strong{dat_sm}: a dataframe binned and summarized in which the summary stats have been melted in the column *int_stat* and
-  the intervals and bins (*int_bin* column) have been dcast to a wide format.
+  \item \strong{dat_sml}: a dataframe binned and summarized in which the summary stats have been melted in the column *int_stat*.
   \item \strong{dat_fs} a dat_sm dataframe splitted by *measure*.
 }
 }

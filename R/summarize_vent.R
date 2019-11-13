@@ -9,10 +9,9 @@
 #' @param form stat for summarizing the data.
 #' @return a list of dataframes:
 #' \enumerate{
-#'   \item \strong{dat_long}: a dataframe of the session that contains a the column *measure* and bins.
+#'   \item \strong{dat_long}: a dataframe of the session that contains a column *measure* and bins.
 #'   \item \strong{dat_vent}: a vent dataframe, in which summary stats for each bin have been calculated.
-#'   \item \strong{dat_sm}: a dataframe binned and summarized in which the summary stats have been melted in the column *int_stat* and
-#'   the intervals and bins (*int_bin* column) have been dcast to a wide format.
+#'   \item \strong{dat_sml}: a dataframe binned and summarized in which the summary stats have been melted in the column *int_stat*.
 #'   \item \strong{dat_fs} a dat_sm dataframe splitted by *measure*.
 #' }
 #' @importFrom rlang .data
@@ -75,6 +74,8 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
   # reorder levels
   dat_sm$int_stat <- factor(dat_sm$int_stat, levels = unique(dat_sm$int_stat))
 
+  dat_sml <- dat_sm
+
   dat_sm <- data.table::dcast(as.data.table(dat_sm),
     cpu_date + subj + drug + dose + unit + measure ~ int_stat,
     value.var = "value"
@@ -91,6 +92,6 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
     setwd(file_p)
     writexl::write_xlsx(dat_fs, paste0("summary_", as.character(dat_vent$cpu_date[1]), ".xlsx"))
   } else {
-    return(list(dat_long = dat_long, dat_vent = dat_vent, dat_sm = dat_sm, dat_fs = dat_fs))
+    return(list(dat_long = dat_long, dat_vent = dat_vent, dat_sml= dat_sml, dat_fs = dat_fs))
   }
 }
