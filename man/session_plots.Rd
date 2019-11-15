@@ -4,7 +4,8 @@
 \alias{session_plots}
 \title{session_plots.}
 \usage{
-session_plots(dat, inter = TRUE, path, baseline = 30, bin = 3)
+session_plots(dat, inter = TRUE, path, vent_stat = "mean",
+  baseline = 30, bin = 3)
 }
 \arguments{
 \item{dat}{a iox dataframe.}
@@ -12,6 +13,8 @@ session_plots(dat, inter = TRUE, path, baseline = 30, bin = 3)
 \item{inter}{logical that determines if dialogs will be used.}
 
 \item{path}{where to save the files.}
+
+\item{vent_stat}{stat used to summarize bins displayed in the y axis ("median" or "mean").}
 
 \item{baseline}{length of baseline in minutes.}
 

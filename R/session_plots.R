@@ -5,13 +5,14 @@
 #' @param dat a iox dataframe.
 #' @param inter logical that determines if dialogs will be used.
 #' @param path where to save the files.
+#' @param vent_stat stat used to summarize bins displayed in the y axis ("median" or "mean").
 #' @param baseline length of baseline in minutes.
 #' @param bin length of bin in minutes.
 #' @return plots
 #' @import ggplot2
 #' @export
 #'
-session_plots <- function(dat, inter = TRUE, path, baseline = 30, bin = 3) {
+session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline = 30, bin = 3) {
   dfs <- summarize_vent(dat = dat, baseline = baseline, bin = bin, inter = FALSE)
   dat_vent <- dfs$dat_vent
 
@@ -28,7 +29,7 @@ session_plots <- function(dat, inter = TRUE, path, baseline = 30, bin = 3) {
     })
   } else {
     figs <- lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
-      autoplot(x, fsave = FALSE)
+      autoplot(x, vent_stat = vent_stat, fsave = FALSE)
     })
     return(figs)
   }

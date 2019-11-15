@@ -3,7 +3,7 @@
 #' autoplot.vent plots a vent dataframe
 #'
 #' @param dat a vent dataframe.
-#' @vent_stat stat used to summarize bins to display in the y axis ("median" or "mean").
+#' @param vent_stat stat used to summarize bins displayed in the y axis ("median" or "mean").
 #' @param fsave if TRUE the function saves the figure in a pdf, otherwise returns a fig.
 #' @return plot.
 #' @import ggplot2
