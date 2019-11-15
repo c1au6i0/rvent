@@ -2,9 +2,9 @@
 #'
 #' session_plots creates plots from list of vent dataframes.
 #'
-#' @param dat a iox dataframe.
+#' @param dat a list of  dataframes as returned by \code{\link{import_session}.
 #' @param inter logical that determines if dialogs will be used.
-#' @param path where to save the files.
+#' @param path where to save the files (used if inter = TRUE).
 #' @param vent_stat stat used to summarize bins displayed in the y axis ("median" or "mean").
 #' @param baseline length of baseline in minutes.
 #' @param bin length of bin in minutes.
