@@ -5,10 +5,10 @@
 \title{session_plots.}
 \usage{
 session_plots(dat, inter = TRUE, path, vent_stat = "mean",
-  baseline = 30, bin = 3)
+  baseline = 30, bin = 3, fsave = TRUE)
 }
 \arguments{
-\item{dat}{a iox dataframe.}
+\item{dat}{a list of  dataframes as returned by \code{\link{import_session}}.}
 
 \item{inter}{logical that determines if dialogs will be used.}
 
@@ -19,6 +19,8 @@ session_plots(dat, inter = TRUE, path, vent_stat = "mean",
 \item{baseline}{length of baseline in minutes.}
 
 \item{bin}{length of bin in minutes.}
+
+\item{fsave}{if TRUE save plots in pdf files in path.}
 }
 \value{
 plots

@@ -2,17 +2,18 @@
 #'
 #' session_plots creates plots from list of vent dataframes.
 #'
-#' @param dat a list of  dataframes as returned by \code{\link{import_session}.
+#' @param dat a list of  dataframes as returned by \code{\link{import_session}}.
 #' @param inter logical that determines if dialogs will be used.
-#' @param path where to save the files (used if inter = TRUE).
+#' @param path where to save the files.
 #' @param vent_stat stat used to summarize bins displayed in the y axis ("median" or "mean").
 #' @param baseline length of baseline in minutes.
 #' @param bin length of bin in minutes.
+#' @param fsave if TRUE save plots in pdf files in path.
 #' @return plots
 #' @import ggplot2
 #' @export
 #'
-session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline = 30, bin = 3) {
+session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline = 30, bin = 3, fsave = TRUE) {
   dfs <- summarize_vent(dat = dat, baseline = baseline, bin = bin, inter = FALSE)
   dat_vent <- dfs$dat_vent
 
@@ -23,7 +24,7 @@ session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline 
   }
 
 
-  if (inter == TRUE) {
+  if (fsave == TRUE) {
     lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
       autoplot(x, fsave = TRUE)
     })
