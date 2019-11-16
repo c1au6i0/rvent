@@ -4,7 +4,6 @@
 #' \code{\link{import_session}}.
 #'
 #' @param iox_folder path to folder for saving data (used if inter = FALSE).
-#' @param baseline length of baseline in minutes.
 #' @param inter logical for using or not dialogs to input data and select folders.
 #' @return a list of dataframe:
 #' \itemize{
@@ -15,7 +14,7 @@
 #' @seealso normalizetime_vent(), import_session(), split_comments().
 #' @importFrom rlang .data
 #' @export
-get_iox <- function(iox_folder, baseline = 30, inter = TRUE) {
+get_iox <- function(iox_folder, inter = TRUE) {
   mess <- "Choose folder containing  iox.txt files of the session."
   if (inter == FALSE) {
     if (missing(iox_folder)) stop("iox_folder missing!")
@@ -174,9 +173,9 @@ normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
 #' @export
 import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd, tofill = NULL) {
   if (inter == TRUE) {
-    all_data <- get_iox(baseline)
+    all_data <- get_iox()
   } else {
-    all_data <- get_iox(iox_folder = iox_folder, baseline = baseline, inter = FALSE)
+    all_data <- get_iox(iox_folder = iox_folder, inter = FALSE)
   }
 
 

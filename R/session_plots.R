@@ -6,7 +6,6 @@
 #' @param inter logical that determines if dialogs will be used.
 #' @param path where to save the files.
 #' @param vent_stat stat used to summarize bins displayed in the y axis ("median" or "mean").
-#' @param baseline length of baseline in minutes.
 #' @param bin length of bin in minutes.
 #' @param measure metric to display.
 #' @param fsave if TRUE saves plots in pdf files in path.
@@ -15,7 +14,7 @@
 #' @export
 #'
 session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline = 30, bin = 3, fsave = TRUE, measure = "ALL") {
-  dfs <- summarize_vent(dat = dat, baseline = baseline, bin = bin, inter = FALSE)
+  dfs <- summarize_vent(dat = dat, bin = bin, inter = FALSE)
   dat_vent <- dfs$dat_vent
 
   if (inter == TRUE) {
@@ -27,12 +26,12 @@ session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline 
 
   if (fsave == TRUE) {
     lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
-      autoplot(x, fsave = TRUE, measure = measure, baseline = baseline)
+      autoplot(x, fsave = TRUE, measure = measure)
     })
   } else {
     setwd(path)
     figs <- lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
-      autoplot(x, vent_stat = vent_stat, fsave = FALSE, measure = measure, baseline = baseline)
+      autoplot(x, vent_stat = vent_stat, fsave = FALSE, measure = measure)
     })
     return(figs)
   }

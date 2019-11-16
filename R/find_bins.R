@@ -3,7 +3,6 @@
 #' find_bins creates left closed duration intervals and filters the dataframe returned by import_vent.
 #'
 #' @param dat dataframe as returned by \code{\link{import_session}}.
-#' @param baseline baseline duration in minutes.
 #' @param bin bin duration in minutes.
 #' @return a dataframe with a column "int_min" indicating the left limit of the interval in minutes and, a
 #'    a colum "int_sec" indicating the left and right limits of the interval in seconds. Time of injection is 0.

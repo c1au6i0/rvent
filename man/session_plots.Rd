@@ -5,7 +5,7 @@
 \title{session_plots.}
 \usage{
 session_plots(dat, inter = TRUE, path, vent_stat = "mean",
-  baseline = 30, bin = 3, fsave = TRUE, measure = "all")
+  baseline = 30, bin = 3, fsave = TRUE, measure = "ALL")
 }
 \arguments{
 \item{dat}{a list of  dataframes as returned by \code{\link{import_session}}.}
@@ -15,8 +15,6 @@ session_plots(dat, inter = TRUE, path, vent_stat = "mean",
 \item{path}{where to save the files.}
 
 \item{vent_stat}{stat used to summarize bins displayed in the y axis ("median" or "mean").}
-
-\item{baseline}{length of baseline in minutes.}
 
 \item{bin}{length of bin in minutes.}
 

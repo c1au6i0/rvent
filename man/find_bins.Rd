@@ -9,8 +9,6 @@ find_bins(dat, baseline, bin)
 \arguments{
 \item{dat}{dataframe as returned by \code{\link{import_session}}.}
 
-\item{baseline}{baseline duration in minutes.}
-
 \item{bin}{bin duration in minutes.}
 }
 \value{

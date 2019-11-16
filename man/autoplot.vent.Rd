@@ -5,7 +5,7 @@
 \alias{autoplot}
 \title{autoplot.vent}
 \usage{
-autoplot.vent(dat, vent_stat = "mean", fsave = TRUE, measure = "all")
+autoplot.vent(dat, vent_stat = "mean", fsave = TRUE, measure = "ALL")
 }
 \arguments{
 \item{dat}{a vent dataframe.}

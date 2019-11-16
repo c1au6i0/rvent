@@ -4,12 +4,10 @@
 \alias{get_iox}
 \title{read iox txt files.}
 \usage{
-get_iox(iox_folder, baseline = 30, inter = TRUE)
+get_iox(iox_folder, inter = TRUE)
 }
 \arguments{
 \item{iox_folder}{path to folder for saving data (used if inter = FALSE).}
-
-\item{baseline}{length of baseline in minutes.}
 
 \item{inter}{logical for using or not dialogs to input data and select folders.}
 }
