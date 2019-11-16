@@ -11,13 +11,13 @@
 #' @importFrom rlang .data
 #' @method vent data.frame
 #' @aliases autoplot
-#' @usage autoplot.vent(dat, vent_stat = "mean", fsave = TRUE, measure = "all")
+#' @usage autoplot.vent(dat, vent_stat = "mean", fsave = TRUE, measure = "ALL")
 #' @export autoplot.vent
-autoplot.vent <- function(dat, vent_stat = "mean", fsave = TRUE, measure = "all") {
+autoplot.vent <- function(dat, vent_stat = "mean", fsave = TRUE, measure = "ALL") {
   if (!"vent" %in% class(dat)) stop("Object is not of class vent")
 
   if (length(measure) == 1){
-     if (measure != "all"){
+     if (measure != "ALL"){
       dat <- dat[dat$measure %in% measure,]
      }} else {
       dat <- dat[dat$measure %in% measure,]
@@ -43,7 +43,7 @@ autoplot.vent <- function(dat, vent_stat = "mean", fsave = TRUE, measure = "all"
 
 
   if (length(measure) == 1){
-      if(measure == "all"){
+      if(measure == "ALL"){
         fig <- fig +
           facet_wrap(vars(measure), ncol = 4, scales = "free_y")
       }} else{
