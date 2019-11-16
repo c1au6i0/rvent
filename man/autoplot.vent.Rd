@@ -5,7 +5,7 @@
 \alias{autoplot}
 \title{autoplot.vent}
 \usage{
-autoplot.vent(dat, vent_stat = "mean", fsave = TRUE)
+autoplot.vent(dat, vent_stat = "mean", fsave = TRUE, measure = "all")
 }
 \arguments{
 \item{dat}{a vent dataframe.}
@@ -13,6 +13,8 @@ autoplot.vent(dat, vent_stat = "mean", fsave = TRUE)
 \item{vent_stat}{stat used to summarize bins displayed in the y axis ("median" or "mean").}
 
 \item{fsave}{if TRUE the function saves the figure in a pdf, otherwise returns a fig.}
+
+\item{measure}{metric to display.}
 }
 \value{
 plot.

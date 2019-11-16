@@ -8,12 +8,13 @@
 #' @param vent_stat stat used to summarize bins displayed in the y axis ("median" or "mean").
 #' @param baseline length of baseline in minutes.
 #' @param bin length of bin in minutes.
+#' @param measure metric to display.
 #' @param fsave if TRUE saves plots in pdf files in path.
 #' @return plots
 #' @import ggplot2
 #' @export
 #'
-session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline = 30, bin = 3, fsave = TRUE) {
+session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline = 30, bin = 3, fsave = TRUE, measure = "all") {
   dfs <- summarize_vent(dat = dat, baseline = baseline, bin = bin, inter = FALSE)
   dat_vent <- dfs$dat_vent
 
@@ -26,12 +27,12 @@ session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline 
 
   if (fsave == TRUE) {
     lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
-      autoplot(x, fsave = TRUE)
+      autoplot(x, fsave = TRUE, measure = measure)
     })
   } else {
     setwd(path)
     figs <- lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
-      autoplot(x, vent_stat = vent_stat, fsave = FALSE)
+      autoplot(x, vent_stat = vent_stat, fsave = FALSE, measure = measure)
     })
     return(figs)
   }

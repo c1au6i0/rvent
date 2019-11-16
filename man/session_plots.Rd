@@ -5,7 +5,7 @@
 \title{session_plots.}
 \usage{
 session_plots(dat, inter = TRUE, path, vent_stat = "mean",
-  baseline = 30, bin = 3, fsave = TRUE)
+  baseline = 30, bin = 3, fsave = TRUE, measure = "all")
 }
 \arguments{
 \item{dat}{a list of  dataframes as returned by \code{\link{import_session}}.}
@@ -20,7 +20,9 @@ session_plots(dat, inter = TRUE, path, vent_stat = "mean",
 
 \item{bin}{length of bin in minutes.}
 
-\item{fsave}{if TRUE save plots in pdf files in path.}
+\item{fsave}{if TRUE saves plots in pdf files in path.}
+
+\item{measure}{metric to display.}
 }
 \value{
 plots
