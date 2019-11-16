@@ -14,7 +14,7 @@
 #' @import ggplot2
 #' @export
 #'
-session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline = 30, bin = 3, fsave = TRUE, measure = "all") {
+session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline = 30, bin = 3, fsave = TRUE, measure = "ALL") {
   dfs <- summarize_vent(dat = dat, baseline = baseline, bin = bin, inter = FALSE)
   dat_vent <- dfs$dat_vent
 
@@ -27,12 +27,12 @@ session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", baseline 
 
   if (fsave == TRUE) {
     lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
-      autoplot(x, fsave = TRUE, measure = measure)
+      autoplot(x, fsave = TRUE, measure = measure, baseline = baseline)
     })
   } else {
     setwd(path)
     figs <- lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
-      autoplot(x, vent_stat = vent_stat, fsave = FALSE, measure = measure)
+      autoplot(x, vent_stat = vent_stat, fsave = FALSE, measure = measure, baseline = baseline)
     })
     return(figs)
   }
