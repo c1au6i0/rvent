@@ -38,8 +38,7 @@ get_iox <- function(iox_folder, inter = TRUE) {
   }
 
   # not sure why it appears that files have different columns.
-  # this is a workaround that
-  # extract name and drug form cell 16,7
+  # this is a workaround that extract name and drug form cell 16,7
   subj_info <- lapply(
     files_imp,
     vroom::vroom,
@@ -54,6 +53,10 @@ get_iox <- function(iox_folder, inter = TRUE) {
   subj_info2 <- lapply(subj_info, function(x) unlist(x)[[1]][1])
   subj <- stringr::str_extract(subj_info2, "[[:digit:]]+")
   drug <- stringr::str_extract(subj_info2, "[[:alpha:]]{4,}")
+
+  if(anyDuplicated(subj) != 0 ) {
+    stop("There 2 or more sessions of the same subject!")
+  }
 
   subj_drug_v <- paste0("rat", unlist(subj), "_", unlist(drug))
 
