@@ -7,6 +7,7 @@
 #' @param bin length of bins in minutes.
 #' @param inter logical.
 #' @param form stat for summarizing the data.
+#' @param filter_vals if TRUE filters data to eliminte impossible value for rat phisiology.
 #' @return a list of dataframes:
 #' \enumerate{
 #'   \item \strong{dat_long}: a dataframe of the session that contains a column *measure* and bins.
@@ -19,7 +20,7 @@
 #' @importFrom data.table as.data.table
 #' @import stats
 #' @export
-summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "mean") {
+summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "mean", filter = "TRUE") {
   if (inter == TRUE) {
     baseline_bin <- svDialogs::dlg_input("Insert the baseline and the bin duration in minutes, separated by a space")$res
     baseline_bin <- as.numeric(unlist(strsplit(baseline_bin, " ")))
@@ -27,7 +28,7 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
     bin <- baseline_bin[2]
   }
 
-  dat2 <- lapply(dat, find_bins, bin = bin)
+  dat2 <- lapply(dat, find_bins, bin = bin, filter = TRUE)
 
   suppressWarnings(dat_all <- dplyr::bind_rows(dat2))
 

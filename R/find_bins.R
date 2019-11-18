@@ -4,27 +4,29 @@
 #'
 #' @param dat dataframe as returned by \code{\link{import_session}}.
 #' @param bin bin duration in minutes.
+#' @param filter_vals if TRUE filter data to eliminte impossible value for rat phisiology.
 #' @return a dataframe with a column "int_min" indicating the left limit of the interval in minutes and, a
 #'    a colum "int_sec" indicating the left and right limits of the interval in seconds. Time of injection is 0.
 #' @importFrom rlang .data
 #' @note this function is used by summarize_vent
 #' @export
-find_bins <- function(dat, baseline, bin) {
-
+find_bins <- function(dat, bin, filter_vals = TRUE) {
+  browser()
   # filter based on some acceptance criteria in rats
-  dat <- dat[
-    dat$TV_ml >= 0.04 &
-      dat$TV_ml <= 10 &
+  if(filter_vals == TRUE){
+        dat <- dat[
+          dat$TV_ml >= 0.04 &
+            dat$TV_ml <= 10 &
 
-      dat$f_bpm >= 10 &
-      dat$f_bpm <= 250 &
+            dat$f_bpm >= 10 &
+            dat$f_bpm <= 250 &
 
-      dat$Ti_msec >= 100 &
-      dat$Ti_msec <= 2000 &
+            dat$Ti_msec >= 100 &
+            dat$Ti_msec <= 2000 &
 
-      dat$Te_msec >= 120 &
-      dat$Te_msec <= 2000,
-  ]
+            dat$Te_msec >= 120 &
+            dat$Te_msec <= 2000,
+        ]}
 
   dat <- dat[!is.na(dat$time_s), ]
 
