@@ -4,8 +4,8 @@
 \alias{session_plots}
 \title{session_plots.}
 \usage{
-session_plots(dat, inter = TRUE, path, vent_stat = "mean",
-  baseline = 30, bin = 3, fsave = TRUE, measure = "ALL")
+session_plots(dat, inter = TRUE, path, vent_stat = "mean", bin = 3,
+  fsave = TRUE, measure = "ALL")
 }
 \arguments{
 \item{dat}{a list of  dataframes as returned by \code{\link{import_session}}.}

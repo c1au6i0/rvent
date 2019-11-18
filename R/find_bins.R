@@ -11,7 +11,6 @@
 #' @note this function is used by summarize_vent
 #' @export
 find_bins <- function(dat, bin, filter_vals = TRUE) {
-  browser()
   # filter based on some acceptance criteria in rats
   if(filter_vals == TRUE){
         dat <- dat[

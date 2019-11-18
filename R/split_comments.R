@@ -5,7 +5,7 @@
 #' "rat 1 2 3.."
 #'
 #' @param tsd dataframe of comments (2 columns).
-#' @param detec regexp for detecting rows with multiple subjects
+#' @param detect regexp for detecting rows with multiple subjects
 #' @param sep regexp  for separating subjects from rest
 #' @param rem the string to remove
 #' @return a dataframe tsd_s

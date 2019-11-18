@@ -9,11 +9,11 @@ split_comments(tsd, detect, sep, rem)
 \arguments{
 \item{tsd}{dataframe of comments (2 columns).}
 
+\item{detect}{regexp for detecting rows with multiple subjects}
+
 \item{sep}{regexp  for separating subjects from rest}
 
 \item{rem}{the string to remove}
-
-\item{detec}{regexp for detecting rows with multiple subjects}
 }
 \value{
 a dataframe tsd_s
