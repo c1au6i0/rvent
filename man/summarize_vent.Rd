@@ -5,7 +5,7 @@
 \title{summarize _vent}
 \usage{
 summarize_vent(dat, inter = TRUE, baseline = 30, bin = 3,
-  form = "mean")
+  form = "mean", filter_vals = "TRUE")
 }
 \arguments{
 \item{dat}{a list of vent dataframes as returned by import_session.}
@@ -17,6 +17,8 @@ summarize_vent(dat, inter = TRUE, baseline = 30, bin = 3,
 \item{bin}{length of bins in minutes.}
 
 \item{form}{stat for summarizing the data.}
+
+\item{filter_vals}{if TRUE filters data to eliminte impossible value for rat phisiology.}
 }
 \value{
 a list of dataframes:

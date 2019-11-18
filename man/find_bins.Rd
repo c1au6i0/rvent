@@ -4,12 +4,14 @@
 \alias{find_bins}
 \title{find_bins in vent dataframes.}
 \usage{
-find_bins(dat, baseline, bin)
+find_bins(dat, bin, filter_vals = TRUE)
 }
 \arguments{
 \item{dat}{dataframe as returned by \code{\link{import_session}}.}
 
 \item{bin}{bin duration in minutes.}
+
+\item{filter_vals}{if TRUE filters data to eliminte impossible value for rat phisiology.}
 }
 \value{
 a dataframe with a column "int_min" indicating the left limit of the interval in minutes and, a

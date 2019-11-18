@@ -20,7 +20,7 @@
 #' @importFrom data.table as.data.table
 #' @import stats
 #' @export
-summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "mean", filter = "TRUE") {
+summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "mean", filter_vals = "TRUE") {
   if (inter == TRUE) {
     baseline_bin <- svDialogs::dlg_input("Insert the baseline and the bin duration in minutes, separated by a space")$res
     baseline_bin <- as.numeric(unlist(strsplit(baseline_bin, " ")))
@@ -28,7 +28,7 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
     bin <- baseline_bin[2]
   }
 
-  dat2 <- lapply(dat, find_bins, bin = bin, filter = TRUE)
+  dat2 <- lapply(dat, find_bins, bin = bin, filter_vals = TRUE)
 
   suppressWarnings(dat_all <- dplyr::bind_rows(dat2))
 
