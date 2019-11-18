@@ -36,7 +36,6 @@ session_plots <- function(dat,
       autoplot(x, fsave = TRUE, measure = measure)
     })
   } else {
-    setwd(path)
     figs <- lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
       autoplot(x, vent_stat = vent_stat, fsave = FALSE, measure = measure)
     })
