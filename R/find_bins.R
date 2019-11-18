@@ -4,7 +4,7 @@
 #'
 #' @param dat dataframe as returned by \code{\link{import_session}}.
 #' @param bin bin duration in minutes.
-#' @param filter_vals if TRUE filter data to eliminte impossible value for rat phisiology.
+#' @param filter_vals if TRUE filters data to eliminte impossible value for rat phisiology.
 #' @return a dataframe with a column "int_min" indicating the left limit of the interval in minutes and, a
 #'    a colum "int_sec" indicating the left and right limits of the interval in seconds. Time of injection is 0.
 #' @importFrom rlang .data
