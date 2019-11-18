@@ -5,7 +5,7 @@
 \title{session_plots.}
 \usage{
 session_plots(dat, inter = TRUE, path, vent_stat = "mean", bin = 3,
-  fsave = TRUE, measure = "ALL")
+  fsave = TRUE, measure = "ALL", filter_vals = TRUE)
 }
 \arguments{
 \item{dat}{a list of  dataframes as returned by \code{\link{import_session}}.}
@@ -21,6 +21,8 @@ session_plots(dat, inter = TRUE, path, vent_stat = "mean", bin = 3,
 \item{fsave}{if TRUE saves plots in pdf files in path.}
 
 \item{measure}{metric to display.}
+
+\item{filter_vals}{if TRUE filters data to eliminte impossible value for rat phisiology.}
 }
 \value{
 plots
