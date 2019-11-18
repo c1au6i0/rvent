@@ -28,7 +28,7 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
     bin <- baseline_bin[2]
   }
 
-  dat2 <- lapply(dat, find_bins, bin = bin, filter_vals = TRUE)
+  dat2 <- lapply(dat, find_bins, bin = bin, filter_vals = filter_vals)
 
   suppressWarnings(dat_all <- dplyr::bind_rows(dat2))
 
