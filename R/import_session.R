@@ -54,7 +54,7 @@ get_iox <- function(iox_folder, inter = TRUE) {
   subj <- stringr::str_extract(subj_info2, "[[:digit:]]+")
   drug <- stringr::str_extract(subj_info2, "[[:alpha:]]{4,}")
 
-  if(anyDuplicated(subj) != 0 ) {
+  if (anyDuplicated(subj) != 0) {
     stop("There 2 or more sessions of the same subject!")
   }
 

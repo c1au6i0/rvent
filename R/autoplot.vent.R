@@ -16,11 +16,12 @@
 autoplot.vent <- function(dat, vent_stat = "mean", fsave = TRUE, measure = "ALL") {
   if (!"vent" %in% class(dat)) stop("Object is not of class vent")
 
-  if (length(measure) == 1){
-     if (measure != "ALL"){
-      dat <- dat[dat$measure %in% measure,]
-     }} else {
-      dat <- dat[dat$measure %in% measure,]
+  if (length(measure) == 1) {
+    if (measure != "ALL") {
+      dat <- dat[dat$measure %in% measure, ]
+    }
+  } else {
+    dat <- dat[dat$measure %in% measure, ]
   }
   title <- paste(as.character(dat$cpu_date[1]), dat$subj[1], dat$drug[1], dat$dose[1], dat$unit[1], sep = " ")
   file_name <- paste(as.character(dat$cpu_date[1]), dat$subj[1], dat$drug[1], dat$dose[1], sep = "_")
@@ -42,14 +43,15 @@ autoplot.vent <- function(dat, vent_stat = "mean", fsave = TRUE, measure = "ALL"
     )
 
 
-  if (length(measure) == 1){
-      if(measure == "ALL"){
-        fig <- fig +
-          facet_wrap(vars(measure), ncol = 4, scales = "free_y")
-      }} else{
-        fig <- fig +
-          facet_wrap(vars(measure),  scales = "free_y")
-      }
+  if (length(measure) == 1) {
+    if (measure == "ALL") {
+      fig <- fig +
+        facet_wrap(vars(measure), ncol = 4, scales = "free_y")
+    }
+  } else {
+    fig <- fig +
+      facet_wrap(vars(measure), scales = "free_y")
+  }
 
 
 

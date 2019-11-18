@@ -8,13 +8,20 @@
 #' @param vent_stat stat used to summarize bins displayed in the y axis ("median" or "mean").
 #' @param bin length of bin in minutes.
 #' @param measure metric to display.
+#' @param filter_vals if TRUE filters data to eliminte impossible value for rat phisiology.
 #' @param fsave if TRUE saves plots in pdf files in path.
 #' @return plots
 #' @import ggplot2
 #' @export
 #'
-session_plots <- function(dat, inter = TRUE, path, vent_stat = "mean", bin = 3, fsave = TRUE, measure = "ALL") {
-  dfs <- summarize_vent(dat = dat, bin = bin, inter = FALSE)
+session_plots <- function(dat,
+                          inter = TRUE,
+                          path,
+                          vent_stat = "mean",
+                          bin = 3, fsave = TRUE,
+                          measure = "ALL",
+                          filter_vals = TRUE) {
+  dfs <- summarize_vent(dat = dat, bin = bin, inter = FALSE, filter_vals = filter_vals)
   dat_vent <- dfs$dat_vent
 
   if (inter == TRUE) {

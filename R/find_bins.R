@@ -12,20 +12,21 @@
 #' @export
 find_bins <- function(dat, bin, filter_vals = TRUE) {
   # filter based on some acceptance criteria in rats
-  if(filter_vals == TRUE){
-        dat <- dat[
-          dat$TV_ml >= 0.04 &
-            dat$TV_ml <= 10 &
+  if (filter_vals == TRUE) {
+    dat <- dat[
+      dat$TV_ml >= 0.04 &
+        dat$TV_ml <= 10 &
 
-            dat$f_bpm >= 10 &
-            dat$f_bpm <= 250 &
+        dat$f_bpm >= 10 &
+        dat$f_bpm <= 250 &
 
-            dat$Ti_msec >= 100 &
-            dat$Ti_msec <= 2000 &
+        dat$Ti_msec >= 100 &
+        dat$Ti_msec <= 2000 &
 
-            dat$Te_msec >= 120 &
-            dat$Te_msec <= 2000,
-        ]}
+        dat$Te_msec >= 120 &
+        dat$Te_msec <= 2000,
+    ]
+  }
 
   dat <- dat[!is.na(dat$time_s), ]
 
