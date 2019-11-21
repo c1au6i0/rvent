@@ -4,8 +4,13 @@
 \alias{import_session}
 \title{Import iox session.}
 \usage{
-import_session(iox_data, baseline = 30, inter = TRUE, comments_tsd,
-  tofill = NULL)
+import_session(
+  iox_data,
+  baseline = 30,
+  inter = TRUE,
+  comments_tsd,
+  tofill = NULL
+)
 }
 \arguments{
 \item{iox_data}{path to folder containing data or, list of files to import when `shin_f = TRUE`.}

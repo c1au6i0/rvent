@@ -4,8 +4,14 @@
 \alias{summarize_vent}
 \title{summarize _vent}
 \usage{
-summarize_vent(dat, inter = TRUE, baseline = 30, bin = 3,
-  form = "mean", filter_vals = "TRUE")
+summarize_vent(
+  dat,
+  inter = TRUE,
+  baseline = 30,
+  bin = 3,
+  form = "mean",
+  filter_vals = "TRUE"
+)
 }
 \arguments{
 \item{dat}{a list of vent dataframes as returned by import_session.}

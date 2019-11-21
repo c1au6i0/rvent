@@ -51,7 +51,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
     if (length(files_imp) == 0) {
       if (inter == TRUE) {
         stop(svDialogs::dlgMessage(mess,
-          type = "ok"
+                                   type = "ok"
         )$res)
       } else {
         stop(mess)
@@ -76,25 +76,40 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
   drug <- stringr::str_extract(subj_info2, "[[:alpha:]]{4,}")
   subj_drug_v <- paste0("rat", unlist(subj), "_", unlist(drug))
 
-  vent <- vroom::vroom(files_imp,
-    delim = "\t",
-    skip = 41,
-    col_names = FALSE,
-    col_types = list(
-      X6 = "c",
-      X7 = "c",
-      X8 = "c",
-      X9 = "c"
-    ),
-    id = "id"
-  )
+  if (shiny_f == TRUE) {
+    vent <- vroom::vroom(files_imp$datapath,
+                         delim = "\t",
+                         skip = 41,
+                         col_names = FALSE,
+                         col_types = list(
+                           X6 = "c",
+                           X7 = "c",
+                           X8 = "c",
+                           X9 = "c"
+                         ),
+                         id = "id"
+    )
+  } else {
+    vent <- vroom::vroom(files_imp,
+                         delim = "\t",
+                         skip = 41,
+                         col_names = FALSE,
+                         col_types = list(
+                           X6 = "c",
+                           X7 = "c",
+                           X8 = "c",
+                           X9 = "c"
+                         ),
+                         id = "id"
+    )
+  }
 
   names(vent) <- unlist(iox_head)
 
   # time in seconds from cpu_time, unfortunately the other columns reset to 0 after 1h
   # Aug 19, 2019, 19-Mar-19
   vent$cpu_date <- lubridate::parse_date_time(vent$cpu_date,
-    orders = c("%b %d, %Y", "%d-%b-%y")
+                                              orders = c("%b %d, %Y", "%d-%b-%y")
   )
 
   vent <- tidyr::separate(vent, .data$cpu_time, c("cpu_time", "cpu_ms"), sep = "\\.")
