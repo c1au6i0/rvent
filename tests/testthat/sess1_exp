@@ -1,50 +1,50 @@
-$rat1_heroin
-# A tibble: 13,606 x 43
-   id     numb cpu_date            cpu_time            cpu_ms site_time
-   <chr> <dbl> <dttm>              <dttm>              <chr>  <chr>    
- 1 /Use…   139 2019-03-19 00:00:00 2019-11-18 13:11:30 229    00:41.5  
- 2 /Use…   140 2019-03-19 00:00:00 2019-11-18 13:11:30 803    00:42.1  
- 3 /Use…   141 2019-03-19 00:00:00 2019-11-18 13:11:31 043    00:42.4  
- 4 /Use…   142 2019-03-19 00:00:00 2019-11-18 13:11:31 291    00:42.6  
- 5 /Use…   143 2019-03-19 00:00:00 2019-11-18 13:11:31 657    00:43.0  
- 6 /Use…   144 2019-03-19 00:00:00 2019-11-18 13:11:32 120    00:43.4  
- 7 /Use…   145 2019-03-19 00:00:00 2019-11-18 13:11:32 393    00:43.7  
- 8 /Use…   146 2019-03-19 00:00:00 2019-11-18 13:11:32 799    00:44.1  
- 9 /Use…   147 2019-03-19 00:00:00 2019-11-18 13:11:33 362    00:44.7  
-10 /Use…   148 2019-03-19 00:00:00 2019-11-18 13:11:33 626    00:44.9  
-# … with 13,596 more rows, and 37 more variables: period_time <chr>,
-#   string_type <chr>, info <chr>, X8 <chr>, X9 <chr>, sto_id <dbl>,
-#   first_beat_id <dbl>, last_beat_id <dbl>, Ti_msec <dbl>, Te_msec <dbl>,
-#   PIF_ml_sec <dbl>, PEF_ml_sec <dbl>, TV_ml <dbl>, EV_ml <dbl>,
-#   RT_msec <dbl>, MV_ml <dbl>, f_bpm <dbl>, EIP_msec <dbl>, EEP_msec <dbl>,
-#   Penh <dbl>, EF50_ml_s <dbl>, RH_percRH <dbl>, Tbox_infC <dbl>,
-#   Tbody_infC <dbl>, Patm_mmHg <dbl>, VCF <dbl>, AV_ml <dbl>, Sr_per <dbl>,
-#   n <dbl>, timecpu_s <dbl>, subj_drug <fct>, time_inj <dbl>, subj <chr>,
-#   drug <chr>, dose <chr>, unit <chr>, time_s <dbl>
+$`rat1_heroin.2019-03-19`
+# A tibble: 13,602 x 43
+   id     numb cpu_date cpu_time            cpu_ms site_time period_time
+   <chr> <dbl> <chr>    <dttm>              <chr>  <chr>     <chr>      
+ 1 /Use…   139 2019-03… 2019-11-21 13:11:30 229    00:41.5   00:41.1    
+ 2 /Use…   140 2019-03… 2019-11-21 13:11:30 803    00:42.1   00:41.7    
+ 3 /Use…   141 2019-03… 2019-11-21 13:11:31 043    00:42.4   00:41.9    
+ 4 /Use…   142 2019-03… 2019-11-21 13:11:31 291    00:42.6   00:42.2    
+ 5 /Use…   143 2019-03… 2019-11-21 13:11:31 657    00:43.0   00:42.5    
+ 6 /Use…   144 2019-03… 2019-11-21 13:11:32 120    00:43.4   00:43.0    
+ 7 /Use…   145 2019-03… 2019-11-21 13:11:32 393    00:43.7   00:43.3    
+ 8 /Use…   146 2019-03… 2019-11-21 13:11:32 799    00:44.1   00:43.7    
+ 9 /Use…   147 2019-03… 2019-11-21 13:11:33 362    00:44.7   00:44.2    
+10 /Use…   148 2019-03… 2019-11-21 13:11:33 626    00:44.9   00:44.5    
+# … with 13,592 more rows, and 36 more variables: string_type <chr>,
+#   info <chr>, X8 <chr>, X9 <chr>, sto_id <dbl>, first_beat_id <dbl>,
+#   last_beat_id <dbl>, Ti_msec <dbl>, Te_msec <dbl>, PIF_ml_sec <dbl>,
+#   PEF_ml_sec <dbl>, TV_ml <dbl>, EV_ml <dbl>, RT_msec <dbl>, MV_ml <dbl>,
+#   f_bpm <dbl>, EIP_msec <dbl>, EEP_msec <dbl>, Penh <dbl>, EF50_ml_s <dbl>,
+#   RH_percRH <dbl>, Tbox_infC <dbl>, Tbody_infC <dbl>, Patm_mmHg <dbl>,
+#   VCF <dbl>, AV_ml <dbl>, Sr_per <dbl>, n <dbl>, timecpu_s <dbl>,
+#   subj_drug <fct>, time_inj <dbl>, subj <chr>, drug <chr>, dose <chr>,
+#   unit <chr>, time_s <dbl>
 
-$rat9_heroin
-# A tibble: 9,687 x 43
-   id     numb cpu_date            cpu_time            cpu_ms site_time
-   <chr> <dbl> <dttm>              <dttm>              <chr>  <chr>    
- 1 /Use…   726 2019-08-19 00:00:00 2019-11-18 14:56:43 129    00:40:28…
- 2 /Use…   727 2019-08-19 00:00:00 2019-11-18 14:56:43 742    00:40:29…
- 3 /Use…   728 2019-08-19 00:00:00 2019-11-18 14:56:44 350    00:40:29…
- 4 /Use…   729 2019-08-19 00:00:00 2019-11-18 14:56:44 902    00:40:30…
- 5 /Use…   730 2019-08-19 00:00:00 2019-11-18 14:56:45 414    00:40:30…
- 6 /Use…   731 2019-08-19 00:00:00 2019-11-18 14:56:45 878    00:40:31…
- 7 /Use…   732 2019-08-19 00:00:00 2019-11-18 14:56:46 283    00:40:31…
- 8 /Use…   733 2019-08-19 00:00:00 2019-11-18 14:56:46 883    00:40:32…
- 9 /Use…   734 2019-08-19 00:00:00 2019-11-18 14:56:47 367    00:40:32…
-10 /Use…   735 2019-08-19 00:00:00 2019-11-18 14:56:47 966    00:40:33…
-# … with 9,677 more rows, and 37 more variables: period_time <chr>,
-#   string_type <chr>, info <chr>, X8 <chr>, X9 <chr>, sto_id <dbl>,
-#   first_beat_id <dbl>, last_beat_id <dbl>, Ti_msec <dbl>, Te_msec <dbl>,
-#   PIF_ml_sec <dbl>, PEF_ml_sec <dbl>, TV_ml <dbl>, EV_ml <dbl>,
-#   RT_msec <dbl>, MV_ml <dbl>, f_bpm <dbl>, EIP_msec <dbl>, EEP_msec <dbl>,
-#   Penh <dbl>, EF50_ml_s <dbl>, RH_percRH <dbl>, Tbox_infC <dbl>,
-#   Tbody_infC <dbl>, Patm_mmHg <dbl>, VCF <dbl>, AV_ml <dbl>, Sr_per <dbl>,
-#   n <dbl>, timecpu_s <dbl>, subj_drug <fct>, time_inj <dbl>, subj <chr>,
-#   drug <chr>, dose <chr>, unit <chr>, time_s <dbl>
+$`rat9_heroin.2019-08-19`
+# A tibble: 19,366 x 43
+   id     numb cpu_date cpu_time            cpu_ms site_time period_time
+   <chr> <dbl> <chr>    <dttm>              <chr>  <chr>     <chr>      
+ 1 /Use…   726 2019-08… 2019-11-21 14:56:43 129    40:28.6   10:28.5    
+ 2 /Use…   727 2019-08… 2019-11-21 14:56:43 742    40:29.2   10:29.1    
+ 3 /Use…   728 2019-08… 2019-11-21 14:56:44 350    40:29.8   10:29.7    
+ 4 /Use…   729 2019-08… 2019-11-21 14:56:44 902    40:30.3   10:30.3    
+ 5 /Use…   730 2019-08… 2019-11-21 14:56:45 414    40:30.8   10:30.8    
+ 6 /Use…   731 2019-08… 2019-11-21 14:56:45 878    40:31.3   10:31.3    
+ 7 /Use…   732 2019-08… 2019-11-21 14:56:46 283    40:31.7   10:31.7    
+ 8 /Use…   733 2019-08… 2019-11-21 14:56:46 883    40:32.3   10:32.3    
+ 9 /Use…   734 2019-08… 2019-11-21 14:56:47 367    40:32.8   10:32.8    
+10 /Use…   735 2019-08… 2019-11-21 14:56:47 966    40:33.4   10:33.4    
+# … with 19,356 more rows, and 36 more variables: string_type <chr>,
+#   info <chr>, X8 <chr>, X9 <chr>, sto_id <dbl>, first_beat_id <dbl>,
+#   last_beat_id <dbl>, Ti_msec <dbl>, Te_msec <dbl>, PIF_ml_sec <dbl>,
+#   PEF_ml_sec <dbl>, TV_ml <dbl>, EV_ml <dbl>, RT_msec <dbl>, MV_ml <dbl>,
+#   f_bpm <dbl>, EIP_msec <dbl>, EEP_msec <dbl>, Penh <dbl>, EF50_ml_s <dbl>,
+#   RH_percRH <dbl>, Tbox_infC <dbl>, Tbody_infC <dbl>, Patm_mmHg <dbl>,
+#   VCF <dbl>, AV_ml <dbl>, Sr_per <dbl>, n <dbl>, timecpu_s <dbl>,
+#   subj_drug <fct>, time_inj <dbl>, subj <chr>, drug <chr>, dose <chr>,
+#   unit <chr>, time_s <dbl>
 
 attr(,"class")
 [1] "list" "iox" 

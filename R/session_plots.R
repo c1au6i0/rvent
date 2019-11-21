@@ -30,13 +30,15 @@ session_plots <- function(dat,
     setwd(path)
   }
 
+  l_subj <- split.data.frame(dat_vent, list(dat_vent$subj, dat_vent$cpu_date), drop = TRUE)
 
   if (fsave == TRUE) {
-    lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
+    lapply(l_subj, function(x) {
       autoplot(x, fsave = TRUE, measure = measure)
     })
   } else {
-    figs <- lapply(split.data.frame(dat_vent, dat_vent$subj), function(x) {
+    figs <-
+    lapply(l_subj,function(x) {
       autoplot(x, vent_stat = vent_stat, fsave = FALSE, measure = measure)
     })
     return(figs)
