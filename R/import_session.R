@@ -3,23 +3,23 @@
 #' get_iox reads and merges files created by the software SCIREQ. It returns a dataframe. The function is used internally by
 #' \code{\link{import_session}}.
 #'
-#' @param iox_folder path to folder for saving data (used if inter = FALSE).
+#' @param iox_data path to folder containing data or, list of files to import when `shin_f = TRUE`.
 #' @param inter logical for using or not dialogs to input data and select folders.
 #' @param shiny_f TRUE if to be used in rvent_app.
 #' @return a list of dataframe:
 #' \itemize{
-#'    \item vent: a list of dataframes of each of the iox files in which time_s = 0 is the start of
+#'    \item vent: a list of dataframes of efach of the iox files in which time_s = 0 is the start of
 #'    the session.
 #'    \item tsd_s: dataframe of all comments with each row rappresenting a
 #'    different subject.}
 #' @seealso normalizetime_vent(), import_session(), split_comments().
 #' @importFrom rlang .data
 #' @export
-get_iox <- function(iox_folder, inter = TRUE, shiny_f = FALSE) {
+get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
 
   if (shiny_f == TRUE){
-    if (missing(iox_files) || is.null(iox_files) ) stop("iox_files missing!")
-    files_imp  <- dplyr::filter(iox_files, stringr::str_detect(.data$name, pattern =  "iox.txt"))
+    if (missing(iox_data) || is.null(iox_data) ) stop("iox files missing!")
+    files_imp  <- dplyr::filter(iox_data, stringr::str_detect(.data$name, pattern =  "iox.txt"))
     mess <- "You have not selected any iox.txt files!"
     if (length(files_imp) == 0) {
       stop(mess)
@@ -40,13 +40,13 @@ get_iox <- function(iox_folder, inter = TRUE, shiny_f = FALSE) {
 
   mess <- "Choose folder containing  iox.txt files of the session."
   if (inter == FALSE) {
-    if (missing(iox_folder)) stop("iox_folder missing!")
+    if (missing(iox_data)) stop("iox folder missing!")
   } else {
     svDialogs::dlg_message(mess, type = "ok")
-    iox_folder <- svDialogs::dlg_dir(title = mess)$res
+    iox_data <- svDialogs::dlg_dir(title = mess)$res
   }
 
-  list_files <- list.files(iox_folder, full.names = TRUE)
+  list_files <- list.files(iox_data, full.names = TRUE)
   files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
 
   mess <- "There are not iox.txt files in that folder!"
@@ -185,17 +185,17 @@ normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
 #'
 #' @param baseline length of baseline in minutes.
 #' @param inter logical for using or not dialogs to input data and select folders.
-#' @param iox_folder path to folder for saving data (used if inter = FALSE).
+#' @param iox_data path to folder containing data or, list of files to import when `shin_f = TRUE`.
 #' @param comments_tsd vector of comments that contain doses (used if inter = FALSE).
 #' @param tofill vector of values to replace missing data in comments_tsd (used if inter = FALSE).
 #' @seealso normalizetime_vent(), import_session(), split_comments().
 #' @importFrom rlang .data
 #' @export
-import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd, tofill = NULL) {
+import_session <- function(iox_data, baseline = 30, inter = TRUE, comments_tsd, tofill = NULL) {
   if (inter == TRUE) {
     all_data <- get_iox()
   } else {
-    all_data <- get_iox(iox_folder = iox_folder, inter = FALSE)
+    all_data <- get_iox(iox_data = iox_data, inter = FALSE)
   }
 
 

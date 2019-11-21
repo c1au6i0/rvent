@@ -1,6 +1,6 @@
 sess1_exp <- "/Users/heverz/Documents/R_projects/rvent/tests/testthat/sess1_exp"
 sess1 <- import_session(
-  inter = FALSE, iox_folder = "/Users/heverz/Documents/R_projects/rvent/inst/extdata/data1",
+  inter = FALSE, iox_data = "/Users/heverz/Documents/R_projects/rvent/inst/extdata/data1",
   comments_tsd = c("1 heroin 600 ug/kg", "9 heroin NA NA"),
   tofill = c(1:2)
 )

@@ -4,11 +4,11 @@
 \alias{import_session}
 \title{Import iox session.}
 \usage{
-import_session(iox_folder, baseline = 30, inter = TRUE, comments_tsd,
+import_session(iox_data, baseline = 30, inter = TRUE, comments_tsd,
   tofill = NULL)
 }
 \arguments{
-\item{iox_folder}{path to folder for saving data (used if inter = FALSE).}
+\item{iox_data}{path to folder containing data or, list of files to import when `shin_f = TRUE`.}
 
 \item{baseline}{length of baseline in minutes.}
 

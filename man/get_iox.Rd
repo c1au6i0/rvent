@@ -4,10 +4,10 @@
 \alias{get_iox}
 \title{read iox txt files.}
 \usage{
-get_iox(iox_folder, inter = TRUE, shiny_f = FALSE)
+get_iox(iox_data, inter = TRUE, shiny_f = FALSE)
 }
 \arguments{
-\item{iox_folder}{path to folder for saving data (used if inter = FALSE).}
+\item{iox_data}{path to folder containing data or, list of files to import when `shin_f = TRUE`.}
 
 \item{inter}{logical for using or not dialogs to input data and select folders.}
 
@@ -16,7 +16,7 @@ get_iox(iox_folder, inter = TRUE, shiny_f = FALSE)
 \value{
 a list of dataframe:
 \itemize{
-   \item vent: a list of dataframes of each of the iox files in which time_s = 0 is the start of
+   \item vent: a list of dataframes of efach of the iox files in which time_s = 0 is the start of
    the session.
    \item tsd_s: dataframe of all comments with each row rappresenting a
    different subject.}
