@@ -91,7 +91,7 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
     file_p <- svDialogs::dlg_dir()$res
 
     setwd(file_p)
-    writexl::write_xlsx(dat_fs, paste0("summary_", as.character(dat_vent$cpu_date[1]), ".xlsx"))
+    writexl::write_xlsx(dat_fs, "summary.xlsx")
   } else {
     return(list(dat_long = dat_long, dat_vent = dat_vent, dat_sml = dat_sml, dat_fs = dat_fs))
   }

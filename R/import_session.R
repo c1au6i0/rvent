@@ -164,7 +164,8 @@ normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
   suppressWarnings(vent_j <- dplyr::inner_join(vent, tsd_s, by = c("subj_drug", "cpu_date")))
 
   # split
-  vent_jn <- split.data.frame(vent_j, list(as.factor(vent_j$subj_drug), as.factor(vent_j$cpu_date)))
+  vent_jn <- split.data.frame(vent_j, list(as.factor(vent_j$subj_drug), as.factor(vent_j$cpu_date)), drop =
+                                 TRUE)
 
   # normalize: 0 injection
   baseline <- baseline * 60 # 30 min baseline
