@@ -5,6 +5,7 @@
 #'
 #' @param iox_folder path to folder for saving data (used if inter = FALSE).
 #' @param inter logical for using or not dialogs to input data and select folders.
+#' @param shiny_f TRUE if to be used in rvent_app.
 #' @return a list of dataframe:
 #' \itemize{
 #'    \item vent: a list of dataframes of each of the iox files in which time_s = 0 is the start of
@@ -14,7 +15,29 @@
 #' @seealso normalizetime_vent(), import_session(), split_comments().
 #' @importFrom rlang .data
 #' @export
-get_iox <- function(iox_folder, inter = TRUE) {
+get_iox <- function(iox_folder, inter = TRUE, shiny_f = FALSE) {
+
+  if (shiny_f == TRUE){
+    if (missing(iox_files) || is.null(iox_files) ) stop("iox_files missing!")
+    files_imp  <- dplyr::filter(iox_files, stringr::str_detect(.data$name, pattern =  "iox.txt"))
+    mess <- "You have not selected any iox.txt files!"
+    if (length(files_imp) == 0) {
+      stop(mess)
+    }
+    # not sure why it appears that files have different columns.
+    # this is a workaround that extract name and drug form cell 16,7
+    subj_info <- lapply(
+      files_imp$datapath,
+      vroom::vroom,
+      skip = 15,
+      n_max = 1,
+      delim = "\t",
+      col_names = FALSE,
+      col_select = "X7",
+      col_types = c(X7 = "c")
+    )
+  }
+
   mess <- "Choose folder containing  iox.txt files of the session."
   if (inter == FALSE) {
     if (missing(iox_folder)) stop("iox_folder missing!")
@@ -53,11 +76,6 @@ get_iox <- function(iox_folder, inter = TRUE) {
   subj_info2 <- lapply(subj_info, function(x) unlist(x)[[1]][1])
   subj <- stringr::str_extract(subj_info2, "[[:digit:]]+")
   drug <- stringr::str_extract(subj_info2, "[[:alpha:]]{4,}")
-
-  if (anyDuplicated(subj) != 0) {
-    stop("There 2 or more sessions of the same subject!")
-  }
-
   subj_drug_v <- paste0("rat", unlist(subj), "_", unlist(drug))
 
   vent <- vroom::vroom(files_imp,
@@ -102,7 +120,7 @@ get_iox <- function(iox_folder, inter = TRUE) {
   comments <- comments[stringr::str_detect(comments, "[1-9]")]
 
   # tsd = time_injection subject and drug
-  tsd <- vent[vent$info %in% comments, c("timecpu_s", "info")]
+  tsd <- vent[vent$info %in% comments, c("cpu_date", "timecpu_s", "info")]
   tsd$info <- stringr::str_remove_all(tsd$info, "^([:alpha:]{3,4}\\s)|^[:alpha:]{3,4}") # rat rats or ray
 
   # "number number number"
@@ -140,19 +158,17 @@ normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
   names(tsd_s)[names(tsd_s) == "timecpu_s"] <- "time_inj"
   tsd_s[, "subj_drug"] <- as.factor(paste0("rat", tsd_s$subj, "_", tsd_s$drug))
 
+  vent$cpu_date <- as.character(vent$cpu_date)
+
   # join tsd_s and vent to add column with injection time.
-  suppressWarnings(vent_j <- dplyr::inner_join(vent, tsd_s, by = c("subj_drug")))
+  suppressWarnings(vent_j <- dplyr::inner_join(vent, tsd_s, by = c("subj_drug", "cpu_date")))
 
   # split
-  vent_jn <- split.data.frame(vent_j, as.factor(vent_j$subj_drug))
+  vent_jn <- split.data.frame(vent_j, list(as.factor(vent_j$subj_drug), as.factor(vent_j$cpu_date)))
 
   # normalize: 0 injection
   baseline <- baseline * 60 # 30 min baseline
   vent_jn <- lapply(vent_jn, function(x) {
-    # start_time <- min(x[["timecpu_s"]], na.rm = TRUE)
-    # x[, "time_s"] <- x[["time_s"]] - start_time
-    # x[, "time_inj"] <- as.numeric(x[["time_inj"]]) - start_time
-    # x[, "start_time"] <- start_time
     x[, "time_s"] <- x[["timecpu_s"]] - x[["time_inj"]]
     x <- x[x$time_s >= -baseline, ]
     class(x) <- c(unlist(class(x)), "iox")
@@ -199,13 +215,16 @@ import_session <- function(iox_folder, baseline = 30, inter = TRUE, comments_tsd
 
   tsd_s <- tidyr::separate(tsd_s, .data$subj_drug_dose_unit, c("subj", "drug", "dose", "unit"), fill = "right", extra = "merge")
 
+  tsd_s$cpu_date <- as.character(tsd_s$cpu_date)
+
+
   tsd_s[tsd_s == "NA"] <- NA
 
   na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
   if (inter == TRUE) {
     if (nrow(na_pos) > 0) {
       for (x in as.numeric(unique(na_pos$row))) {
-        mesg <- paste(list("subj =", "; drug =", "; dose =", "; unit ="), unlist(tsd_s[x, 2:ncol(tsd_s)]), collapse = " ")
+        mesg <- paste(list("subj =", "; drug =", "; dose =", "; unit ="), unlist(tsd_s[x, 3:ncol(tsd_s)]), collapse = " ")
         tofill <- svDialogs::dlg_input(paste0("Enter any missing values (NA) in: ", mesg))$res
         tofill <- unlist(strsplit(tofill, " "))
         prova <- is.na(tsd_s[x, ])

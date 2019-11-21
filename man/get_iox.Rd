@@ -4,12 +4,14 @@
 \alias{get_iox}
 \title{read iox txt files.}
 \usage{
-get_iox(iox_folder, inter = TRUE)
+get_iox(iox_folder, inter = TRUE, shiny_f = FALSE)
 }
 \arguments{
 \item{iox_folder}{path to folder for saving data (used if inter = FALSE).}
 
 \item{inter}{logical for using or not dialogs to input data and select folders.}
+
+\item{shiny_f}{TRUE if to be used in rvent_app.}
 }
 \value{
 a list of dataframe:

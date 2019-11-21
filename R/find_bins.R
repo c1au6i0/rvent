@@ -49,3 +49,4 @@ find_bins <- function(dat, bin, filter_vals = TRUE) {
   dat[, "int_sec"] <- cut(dat$time_s, intv)
   return(dat)
 }
+
