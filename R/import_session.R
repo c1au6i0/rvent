@@ -16,7 +16,6 @@
 #' @importFrom rlang .data
 #' @export
 get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
-
   if (shiny_f == TRUE){
     if (missing(iox_data) || is.null(iox_data) ) stop("iox files missing!")
     files_imp  <- dplyr::filter(iox_data, stringr::str_detect(.data$name, pattern =  "iox.txt"))
@@ -36,43 +35,42 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
       col_select = "X7",
       col_types = c(X7 = "c")
     )
-  }
-
-  mess <- "Choose folder containing  iox.txt files of the session."
-  if (inter == FALSE) {
-    if (missing(iox_data)) stop("iox folder missing!")
   } else {
-    svDialogs::dlg_message(mess, type = "ok")
-    iox_data <- svDialogs::dlg_dir(title = mess)$res
-  }
-
-  list_files <- list.files(iox_data, full.names = TRUE)
-  files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
-
-  mess <- "There are not iox.txt files in that folder!"
-  if (length(files_imp) == 0) {
-    if (inter == TRUE) {
-      stop(svDialogs::dlgMessage(mess,
-        type = "ok"
-      )$res)
+    mess <- "Choose folder containing  iox.txt files of the session."
+    if (inter == FALSE) {
+      if (missing(iox_data)) stop("iox folder missing!")
     } else {
-      stop(mess)
+      svDialogs::dlg_message(mess, type = "ok")
+      iox_data <- svDialogs::dlg_dir(title = mess)$res
     }
+
+    list_files <- list.files(iox_data, full.names = TRUE)
+    files_imp <- list_files[grepl(pattern = "*iox.txt", list_files)]
+
+    mess <- "There are not iox.txt files in that folder!"
+    if (length(files_imp) == 0) {
+      if (inter == TRUE) {
+        stop(svDialogs::dlgMessage(mess,
+          type = "ok"
+        )$res)
+      } else {
+        stop(mess)
+      }
+    }
+
+    # not sure why it appears that files have different columns.
+    # this is a workaround that extract name and drug form cell 16,7
+    subj_info <- lapply(
+      files_imp,
+      vroom::vroom,
+      skip = 15,
+      n_max = 1,
+      delim = "\t",
+      col_names = FALSE,
+      col_select = "X7",
+      col_types = c(X7 = "c")
+    )
   }
-
-  # not sure why it appears that files have different columns.
-  # this is a workaround that extract name and drug form cell 16,7
-  subj_info <- lapply(
-    files_imp,
-    vroom::vroom,
-    skip = 15,
-    n_max = 1,
-    delim = "\t",
-    col_names = FALSE,
-    col_select = "X7",
-    col_types = c(X7 = "c")
-  )
-
   subj_info2 <- lapply(subj_info, function(x) unlist(x)[[1]][1])
   subj <- stringr::str_extract(subj_info2, "[[:digit:]]+")
   drug <- stringr::str_extract(subj_info2, "[[:alpha:]]{4,}")
