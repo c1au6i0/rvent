@@ -71,9 +71,12 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
       col_types = c(X7 = "c")
     )
   }
+
   subj_info2 <- lapply(subj_info, function(x) unlist(x)[[1]][1])
   subj <- stringr::str_extract(subj_info2, "[[:digit:]]+")
-  drug <- stringr::str_extract(subj_info2, "[[:alpha:]]{4,}")
+
+  drug  <- gsub("^.*[0-9].*?([[:alpha:]]{4,}).*", "\\1", subj_info2)
+
   subj_drug_v <- paste0("rat", unlist(subj), "_", unlist(drug))
 
   if (shiny_f == TRUE) {
@@ -166,6 +169,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
 #' @importFrom rlang .data
 #' @export
 normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
+
   vent <- dat
   if (!is.null(tofill)) tsd_s[is.na(tsd_s)] <- tofill
   names(tsd_s)[names(tsd_s) == "timecpu_s"] <- "time_inj"
@@ -211,7 +215,6 @@ import_session <- function(iox_data, baseline = 30, inter = TRUE, comments_tsd, 
     all_data <- get_iox(iox_data = iox_data, inter = FALSE)
   }
 
-
   vent <- all_data$vent
   choose_comments <- all_data$tsd_s
   #----------------------------------------------#
@@ -226,15 +229,11 @@ import_session <- function(iox_data, baseline = 30, inter = TRUE, comments_tsd, 
   }
 
   tsd_s <- choose_comments[choose_comments$subj_drug_dose_unit %in% comments_tsd, ]
-
   tsd_s <- tidyr::separate(tsd_s, .data$subj_drug_dose_unit, c("subj", "drug", "dose", "unit"), fill = "right", extra = "merge")
-
   tsd_s$cpu_date <- as.character(tsd_s$cpu_date)
-
-
   tsd_s[tsd_s == "NA"] <- NA
-
   na_pos <- dplyr::arrange(as.data.frame(which(is.na(tsd_s), arr.ind = TRUE)), row)
+
   if (inter == TRUE) {
     if (nrow(na_pos) > 0) {
       for (x in as.numeric(unique(na_pos$row))) {
