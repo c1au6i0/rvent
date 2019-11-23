@@ -27,7 +27,7 @@ autoplot.vent <- function(dat, vent_stat = "mean", fsave = TRUE, measure = "ALL"
   file_name <- paste(as.character(dat$cpu_date[1]), dat$subj[1], dat$drug[1], dat$dose[1], sep = "_")
   dat$int_min <- as.numeric(dat$int_min)
 
-  labs <- as.numeric(seq(min(dat$int_min), max(dat$int_min), 15))
+  labs <- as.numeric(seq(min(dat$int_min,  na.rm = TRUE), max(dat$int_min,  na.rm = TRUE), 15))
 
   fig <-
     ggplot(dat, aes_string("int_min", vent_stat, col = "measure")) +
