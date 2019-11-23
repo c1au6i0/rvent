@@ -171,17 +171,19 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
 normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
 
   vent <- dat
+  vent <- tidyr::separate(vent, .data$subj_drug, c("subj", "drug"), remove = TRUE)
   if (!is.null(tofill)) tsd_s[is.na(tsd_s)] <- tofill
   names(tsd_s)[names(tsd_s) == "timecpu_s"] <- "time_inj"
-  tsd_s[, "subj_drug"] <- as.factor(paste0("rat", tsd_s$subj, "_", tsd_s$drug))
+  tsd_s[, "subj"] <- as.factor(paste0("rat", tsd_s$subj))
+
 
   vent$cpu_date <- as.character(vent$cpu_date)
 
   # join tsd_s and vent to add column with injection time.
-  suppressWarnings(vent_j <- dplyr::inner_join(vent, tsd_s, by = c("subj_drug", "cpu_date")))
+  suppressWarnings(vent_j <- dplyr::inner_join(vent, tsd_s, by = c("subj", "cpu_date")))
 
   # split
-  vent_jn <- split.data.frame(vent_j, list(as.factor(vent_j$subj_drug), as.factor(vent_j$cpu_date)), drop =
+  vent_jn <- split.data.frame(vent_j, list(as.factor(vent_j$subj), as.factor(vent_j$cpu_date)), drop =
                                  TRUE)
 
   # normalize: 0 injection

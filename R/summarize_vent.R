@@ -39,10 +39,17 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
     measure.vars = col_melt[1]:col_melt[2],
     variable.name = "measure", value.name = "value"
   )
+  dat_long <- as.data.frame(dat_long)
+
+  # are there 2 drugs given to the same animal?
+  if (all(c("drug.x", "drug.y") %in% names(dat_long))) {
+    names(dat_long)[names(dat_long) == "drug.x"] <- "drug"
+    dat_long <- dat_long[, names(dat_long) != "drug.y"]
+  }
 
   # first data summary
   dat_vent <- dat_long %>%
-    dplyr::group_by(.data$cpu_date, .data$subj_drug, .data$dose, .data$unit, .data$int_min, .data$measure) %>%
+    dplyr::group_by(.data$cpu_date, .data$subj, .data$drug, .data$dose, .data$unit, .data$int_min, .data$measure) %>%
     dplyr::summarise(
       mean = mean(.data$value),
       median = median(.data$value),
@@ -50,8 +57,7 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
       n = dplyr::n(),
       baseline = baseline,
       bin = bin
-    ) %>%
-    tidyr::separate(.data$subj_drug, c("subj", "drug"), remove = TRUE)
+    )
 
 
   class(dat_vent) <- c("data.frame", "vent")
