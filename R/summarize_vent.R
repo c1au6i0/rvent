@@ -30,7 +30,7 @@ summarize_vent <- function(dat, inter = TRUE, baseline = 30, bin = 3, form = "me
 
   dat2 <- lapply(dat, find_bins, bin = bin, filter_vals = filter_vals)
 
-  suppressWarnings(dat_all <- dplyr::bind_rows(dat2))
+  suppressWarnings(dat_all <- do.call(rbind, dat2))
 
   col_melt <- which(names(dat_all) %in% c("Ti_msec", "Sr_per"))
 

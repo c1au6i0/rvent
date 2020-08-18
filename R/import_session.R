@@ -36,7 +36,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
       col_types = c(X7 = "c")
     )
   } else {
-    mess <- "Choose folder containing  iox.txt files of the session."
+    mess <- "Choose folder containing iox.txt files of the session."
     if (inter == FALSE) {
       if (missing(iox_data)) stop("iox folder missing!")
     } else {
@@ -169,8 +169,8 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
 #' @importFrom rlang .data
 #' @export
 normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
-
   vent <- dat
+  tsd_s <- as.data.frame(tsd_s)
   vent <- tidyr::separate(vent, .data$subj_drug, c("subj", "drug"), remove = TRUE)
   if (!is.null(tofill)) tsd_s[is.na(tsd_s)] <- tofill
   names(tsd_s)[names(tsd_s) == "timecpu_s"] <- "time_inj"

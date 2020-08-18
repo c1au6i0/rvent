@@ -16,7 +16,7 @@ knitr::opts_chunk$set(
 # rvent
 
 <!-- badges: start -->
-[![](https://img.shields.io/badge/devel%20version-0.0.1.9000-blue.svg)](https://github.com/https://github.com/c1au6i0/rvent)
+[![](https://img.shields.io/badge/devel%20version-0.2.1.2000-blue.svg)](https://github.com/https://github.com/c1au6i0/rvent)
 [![](https://img.shields.io/github/last-commit/c1au6i0/rvent.svg)](https://github.com/c1au6i0/rvent/commits/master)
 <!-- badges: end -->
 
@@ -77,7 +77,7 @@ x <- dat_vent %>%
 
 class(x) <- c("vent", "data.frame")
 
-autoplot(x, fsave = FALSE)
+autoplot.vent(x, fsave = FALSE)
 ```
 
 ### Accepted files and recording
