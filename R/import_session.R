@@ -147,7 +147,6 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
   # space between a number and a word that is not "and"
   tsd <- split_comments(tsd, detect = "and", sep = "(?<=[0-9])\\s(?=[A-z])(?!and)", rem = "and")
 
-  browser()
   tsd$info <- stringr::str_remove_all(tsd$info, "(?!/)[:punct:]")
 
   # now we split the comment, tsd_s = tsd separated
