@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![](https://img.shields.io/badge/devel%20version-0.2.1.2000-blue.svg)](https://github.com/https://github.com/c1au6i0/rvent)
+[![](https://img.shields.io/badge/devel%20version-0.2.2.2000-blue.svg)](https://github.com/https://github.com/c1au6i0/rvent)
 [![](https://img.shields.io/github/last-commit/c1au6i0/rvent.svg)](https://github.com/c1au6i0/rvent/commits/master)
 <!-- badges: end -->
 
@@ -13,9 +13,9 @@ The goal of rvent is to summarize, analyze and plot experimental data
 recorded with the [SCIREQ pletysmograph](https://www.scireq.com/).
 
 The package was originally developed for being used by people with
-limited knowledge of *R*. For example, when function parameter `inter =
-TRUE`, dialog windows allow to interactively insert all others required
-parameters.
+limited knowledge of *R*. For example, when function parameter
+`inter = TRUE`, dialog windows allow to interactively insert all others
+required parameters.
 
 The `rvent` packaged is used by a **the shiny app**
 ([link](https://rden.shinyapps.io/rvent_app/),
@@ -103,11 +103,11 @@ Note, that **subjects are expected to get one injection per session.**
 
 For each subject, the time of the injection is identified by:
 
-  - extracting rows with comments and columns relative to time, date and
+-   extracting rows with comments and columns relative to time, date and
     comments.
-  - extracting from that dataframe, subject `ID DRUG DOSE UNIT`.
-  - clean it up to have a single subject for each row.
-  - inner-joining it with the dataframe of data by `ID` and `DATE`(this
+-   extracting from that dataframe, subject `ID DRUG DOSE UNIT`.
+-   clean it up to have a single subject for each row.
+-   inner-joining it with the dataframe of data by `ID` and `DATE`(this
     last one introduced in *v0.0.2.100*).
 
 **This means that you can analyze together different sessions of the

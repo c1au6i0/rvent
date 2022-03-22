@@ -16,6 +16,7 @@
 #' @importFrom rlang .data
 #' @export
 get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
+
   if (shiny_f == TRUE){
     if (missing(iox_data) || is.null(iox_data) ) stop("iox files missing!")
     files_imp  <- dplyr::filter(iox_data, stringr::str_detect(.data$name, pattern =  "iox.txt"))
@@ -129,7 +130,8 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
   vent[, "subj_drug"] <- newnames[vent$id]
   vent$subj_drug <- as.factor(newnames[vent$id])
 
-  vent$string_type <- tidyr::replace_na(vent$string_type, 0)
+  # vent$string_type <-
+  vent$string_type[is.na(vent$string_type)] <-  0
 
   comments <- stats::na.omit(unique(vent$info[vent$string_type == c("comment")]))
   # eliminate comments without subjects (i.e. numbers)
