@@ -74,7 +74,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
   }
 
   subj_info2 <- lapply(subj_info, function(x) unlist(x)[[1]][1])
-  subj <- stringr::str_extract(subj_info2, "[[:digit:]]+")
+  subj <- as.numeric(stringr::str_extract(subj_info2, "[[:digit:]]+"))
 
   drug  <- gsub("^.*[0-9].*?([[:alpha:]]{4,}).*", "\\1", subj_info2)
 
@@ -107,6 +107,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
                          id = "id"
     )
   }
+
 
   names(vent) <- unlist(iox_head)
 
@@ -152,7 +153,8 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
   # now we split the comment, tsd_s = tsd separated
   tsd_s <- tidyr::separate(tsd, .data$info, c("drug", "dose", "unit"), fill = "right", extra = "merge")
 
-  rm_subj <- as.numeric(stringr::str_extract(unique(vent$subj_drug), "[0-9]+"))
+
+  rm_subj <- stringr::str_extract(unique(vent$subj_drug), "[0-9]+")
   tsd_s <- tsd_s[tsd_s$subj %in% rm_subj, ]
 
   return(list(vent = vent, tsd_s = tsd_s))
@@ -171,6 +173,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
 #' @importFrom rlang .data
 #' @export
 normalizetime_vent <- function(dat, tsd_s, tofill, baseline = 30) {
+
   vent <- dat
   tsd_s <- as.data.frame(tsd_s)
   vent <- tidyr::separate(vent, .data$subj_drug, c("subj", "drug"), remove = TRUE)
