@@ -124,6 +124,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
     as.numeric(format(vent$cpu_time, "%M")) * 60 +
     as.numeric(format(vent$cpu_time, "%H")) * 3600
 
+
   # recode \
   vent_id <- as.character(unique(vent$id))
   id_recode <- subj_drug_v[seq_along(vent_id)]
@@ -144,6 +145,8 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
 
   # "number number number"
   tsd <- split_comments(tsd, detect = "[0-9]\\s[0-9]+", sep = "(?<=[0-9])\\s(?=[A-z])", rem = "")
+  tsd$subj <- as.numeric(tsd$subj)
+
   tsd <- tidyr::unite(tsd, "info", .data$subj, .data$info, sep = " ")
   # space between a number and a word that is not "and"
   tsd <- split_comments(tsd, detect = "and", sep = "(?<=[0-9])\\s(?=[A-z])(?!and)", rem = "and")
