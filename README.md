@@ -5,7 +5,7 @@
 
 <!-- badges: start -->
 
-[![](https://img.shields.io/badge/devel%20version-0.2.5.2000-blue.svg)](https://github.com/https://github.com/c1au6i0/rvent)
+[![](https://img.shields.io/badge/devel%20version-0.2.6-blue.svg)](https://github.com/https://github.com/c1au6i0/rvent)
 [![](https://img.shields.io/github/last-commit/c1au6i0/rvent.svg)](https://github.com/c1au6i0/rvent/commits/master)
 <!-- badges: end -->
 
@@ -103,12 +103,12 @@ Note, that **subjects are expected to get one injection per session.**
 
 For each subject, the time of the injection is identified by:
 
--   extracting rows with comments and columns relative to time, date and
-    comments.
--   extracting from that dataframe, subject `ID DRUG DOSE UNIT`.
--   clean it up to have a single subject for each row.
--   inner-joining it with the dataframe of data by `ID` and `DATE`(this
-    last one introduced in *v0.0.2.100*).
+- extracting rows with comments and columns relative to time, date and
+  comments.
+- extracting from that dataframe, subject `ID DRUG DOSE UNIT`.
+- clean it up to have a single subject for each row.
+- inner-joining it with the dataframe of data by `ID` and `DATE`(this
+  last one introduced in *v0.0.2.100*).
 
 **This means that you can analyze together different sessions of the
 same subject, as long as they are not from the same day.**

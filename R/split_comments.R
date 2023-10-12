@@ -12,6 +12,7 @@
 #' @importFrom rlang .data
 #' @export
 split_comments <- function(tsd, detect, sep, rem) {
+
   tsd$info <- stringr::str_remove_all(tsd$info, " -") # there are comments with that
   toadd <- tsd[stringr::str_detect(tsd$info, detect), ] # get comments with "number number number"
   tsd2 <- dplyr::setdiff(tsd, toadd) # remove them
@@ -20,10 +21,13 @@ split_comments <- function(tsd, detect, sep, rem) {
     extra = "merge"
   ) # separate subject from rest: first space between number and word
   n_subj <- unlist(stringr::str_split(unlist(toadd$subj), " ")) # create a vector of subjects
-  col_subj <- n_subj[n_subj != rem] # remove and
-  rep_subj <- stringr::str_count(toadd$subj, "[0-9]") # how many subjects in each comment?
+  col_subj <- n_subj[n_subj != rem] # remove
+  rep_subj <- stringr::str_count(toadd$subj, "\\d+") # how many subjects in each comment?
   toadd <- toadd[rep(seq_len(nrow(toadd)), rep_subj), ] # repeat rows for each subject
   toadd$subj <- col_subj # substitute subject
+
+  # add a space if subject and treatment do not have it (e.s. 07nlx)
+  tsd2$info <- gsub("([0-9])([[:alpha:]])", "\\1 \\2", tsd2$info)
   tsd3 <- tidyr::separate(tsd2, .data$info,
     sep = "(?<=[0-9])\\s", c("subj", "info"),
     extra = "merge"

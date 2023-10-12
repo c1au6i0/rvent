@@ -2,7 +2,7 @@ Type: Package
 Package: rvent
 Title: Analyze and vsualize data recorded with SCIREQ
     pletysmograph
-Version: 0.2.5.2000
+Version: 0.2.6
 Author: claudio_zanettini
 Maintainer: claudio_zanettini <claudio.zanettini@gmail.com>
 Description: Functions to import, analyze and visualize data of
@@ -32,4 +32,4 @@ Remotes:
     SciViews/svDialogs
 Encoding: UTF-8
 LazyData: true
-RoxygenNote: 7.1.2
+RoxygenNote: 7.2.3

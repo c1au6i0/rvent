@@ -76,7 +76,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
   subj_info2 <- lapply(subj_info, function(x) unlist(x)[[1]][1])
   subj <- as.numeric(stringr::str_extract(subj_info2, "[[:digit:]]+"))
 
-  drug  <- gsub("^.*[0-9].*?([[:alpha:]]{4,}).*", "\\1", subj_info2)
+  drug  <- gsub("^.*[0-9].*?([[:alpha:]]{3,}).*", "\\1", subj_info2)
 
   subj_drug_v <- paste0("rat", unlist(subj), "_", unlist(drug))
 
