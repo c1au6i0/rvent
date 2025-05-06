@@ -9,7 +9,7 @@ Description: Functions to import, analyze and visualize data of
     plethysmograph.
 License: MIT + file LICENSE
 Depends: 
-    R (>= 3.3.6)
+    R (>= 3.5)
 Imports: 
     data.table (>= 1.12.6),
     dplyr (>= 0.8.3),

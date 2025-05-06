@@ -64,7 +64,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
     subj_info <- lapply(
       files_imp,
       vroom::vroom,
-      skip = 15,
+      skip = 17,
       n_max = 1,
       delim = "\t",
       col_names = FALSE,
@@ -83,7 +83,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
   if (shiny_f == TRUE) {
     vent <- vroom::vroom(files_imp$datapath,
                          delim = "\t",
-                         skip = 41,
+                         skip = 46,
                          col_names = FALSE,
                          col_types = list(
                            X6 = "c",
@@ -96,7 +96,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
   } else {
     vent <- vroom::vroom(files_imp,
                          delim = "\t",
-                         skip = 41,
+                         skip = 46,
                          col_names = FALSE,
                          col_types = list(
                            X6 = "c",
@@ -107,6 +107,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
                          id = "id"
     )
   }
+
 
 
   names(vent) <- unlist(iox_head)
@@ -134,6 +135,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
 
   # vent$string_type <-
   vent$string_type[is.na(vent$string_type)] <-  0
+  vent <- vent[vent$string_type != "analyzer-tuning",]
 
   comments <- stats::na.omit(unique(vent$info[vent$string_type == c("comment")]))
   # eliminate comments without subjects (i.e. numbers)
@@ -165,7 +167,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
 
 #' normalize time of injection.
 #'
-#' normalizetime_vent tidies up the ataframes returned by \code{\link{get_iox}} and creates a column of time from injection in seconds.
+#' normalizetime_vent tidies up the dataframes returned by \code{\link{get_iox}} and creates a column of time from injection in seconds.
 #' The function is used internally by \code{\link{import_session}}.
 #'
 #' @param dat a dataframe returned by \code{\link{get_iox}}.
