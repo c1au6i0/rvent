@@ -29,7 +29,7 @@ get_iox <- function(iox_data, inter = TRUE, shiny_f = FALSE) {
     subj_info <- lapply(
       files_imp$datapath,
       vroom::vroom,
-      skip = 15,
+      skip = 17,
       n_max = 1,
       delim = "\t",
       col_names = FALSE,
